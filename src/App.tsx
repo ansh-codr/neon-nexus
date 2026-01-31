@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute, FitSetupRoute, AuthRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -32,23 +33,31 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
+            {/* Public Routes - No auth required */}
             <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/demo" element={<Demo />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/admin" element={<AdminPanel />} />
-            <Route path="/connect-fit" element={<ConnectFit />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
-            <Route path="/games" element={<Games />} />
-            <Route path="/games/tic-tac-toe" element={<TicTacToe />} />
-            <Route path="/games/memory-flip" element={<MemoryFlip />} />
-            <Route path="/games/rock-paper-scissors" element={<RockPaperScissors />} />
-            <Route path="/games/reaction-time" element={<ReactionTime />} />
-            <Route path="/games/snake" element={<Snake />} />
-            <Route path="/games/simon-says" element={<SimonSays />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            
+            {/* Auth Routes - Redirect if already logged in */}
+            <Route path="/login" element={<AuthRoute><Login /></AuthRoute>} />
+            <Route path="/signup" element={<AuthRoute><Signup /></AuthRoute>} />
+            
+            {/* Fit Setup Route - Requires login, but not Fit yet */}
+            <Route path="/connect-fit" element={<FitSetupRoute><ConnectFit /></FitSetupRoute>} />
+            
+            {/* Protected Routes - Require login + Google Fit */}
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+            <Route path="/demo" element={<ProtectedRoute><Demo /></ProtectedRoute>} />
+            <Route path="/games" element={<ProtectedRoute><Games /></ProtectedRoute>} />
+            <Route path="/games/tic-tac-toe" element={<ProtectedRoute><TicTacToe /></ProtectedRoute>} />
+            <Route path="/games/memory-flip" element={<ProtectedRoute><MemoryFlip /></ProtectedRoute>} />
+            <Route path="/games/rock-paper-scissors" element={<ProtectedRoute><RockPaperScissors /></ProtectedRoute>} />
+            <Route path="/games/reaction-time" element={<ProtectedRoute><ReactionTime /></ProtectedRoute>} />
+            <Route path="/games/snake" element={<ProtectedRoute><Snake /></ProtectedRoute>} />
+            <Route path="/games/simon-says" element={<ProtectedRoute><SimonSays /></ProtectedRoute>} />
+            
+            {/* Catch-all */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
