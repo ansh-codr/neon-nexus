@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import ScrollExpandMedia from './ScrollExpandMedia';
-import doctorBg from '@/assets/doctor-bg.jpg';
+import healthBg from '@/assets/health-bg.jpg';
 import GlitchText from './GlitchText';
 
 const ScrollExpandHero = () => {
@@ -12,7 +12,7 @@ const ScrollExpandHero = () => {
     <ScrollExpandMedia
       mediaType="video"
       mediaSrc="https://videos.pexels.com/video-files/5377684/5377684-uhd_2560_1440_25fps.mp4"
-      bgImageSrc={doctorBg}
+      bgImageSrc={healthBg}
       title="Campus Health"
       date="PS-98 // Health Tracker"
       scrollToExpand="↓ Scroll to Expand ↓"
