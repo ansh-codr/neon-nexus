@@ -39,14 +39,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               photoURL: authUser.photoURL || undefined,
               examMode: false,
             };
-            await saveUserProfile(authUser.uid, newProfile);
-            profile = await getUserProfile(authUser.uid);
+            try {
+              await saveUserProfile(authUser.uid, newProfile);
+              profile = await getUserProfile(authUser.uid);
+            } catch (saveErr) {
+              console.warn('Could not save profile to Firebase, using local:', saveErr);
+              profile = newProfile as UserProfile;
+            }
           }
           
           setUserProfile(profile);
         } catch (err) {
-          console.error('Error fetching user profile:', err);
-          setError('Failed to load user profile');
+          console.warn('Error fetching user profile, using defaults:', err);
+          // Use default profile based on auth user data
+          setUserProfile({
+            uid: authUser.uid,
+            email: authUser.email || '',
+            displayName: authUser.displayName || 'Cyber User',
+            photoURL: authUser.photoURL || undefined,
+            examMode: false,
+          } as UserProfile);
         }
       } else {
         setUserProfile(null);

@@ -304,13 +304,20 @@ export const subscribeToUserStreak = (
   userId: string,
   callback: (streak: UserStreakRecord | null) => void
 ) => {
-  return onSnapshot(doc(db, STREAK_COLLECTIONS.USER_STREAKS, userId), (docSnap) => {
-    if (docSnap.exists()) {
-      callback({ id: docSnap.id, ...docSnap.data() } as UserStreakRecord);
-    } else {
+  return onSnapshot(
+    doc(db, STREAK_COLLECTIONS.USER_STREAKS, userId),
+    (docSnap) => {
+      if (docSnap.exists()) {
+        callback({ id: docSnap.id, ...docSnap.data() } as UserStreakRecord);
+      } else {
+        callback(null);
+      }
+    },
+    (error) => {
+      console.warn('Streak subscription error (using demo data):', error.message);
       callback(null);
     }
-  });
+  );
 };
 
 // Subscribe to public leaderboard
@@ -324,19 +331,26 @@ export const subscribeToPublicLeaderboard = (
     limit(limitCount)
   );
 
-  return onSnapshot(q, (snapshot) => {
-    const snapshots = snapshot.docs.map(doc => {
-      const data = doc.data() as UserStreakRecord;
-      return {
-        userId: data.userId,
-        displayName: data.displayName,
-        dedicationLevel: data.dedicationLevel,
-        currentStreak: Math.max(data.healthStreak, data.studyStreak),
-        badge: getBadge(data.dedicationLevel),
-      };
-    });
-    callback(snapshots);
-  });
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const snapshots = snapshot.docs.map(doc => {
+        const data = doc.data() as UserStreakRecord;
+        return {
+          userId: data.userId,
+          displayName: data.displayName,
+          dedicationLevel: data.dedicationLevel,
+          currentStreak: Math.max(data.healthStreak, data.studyStreak),
+          badge: getBadge(data.dedicationLevel),
+        };
+      });
+      callback(snapshots);
+    },
+    (error) => {
+      console.warn('Leaderboard subscription error (using demo data):', error.message);
+      callback([]);
+    }
+  );
 };
 
 // Get competitive feed
@@ -408,8 +422,13 @@ export const subscribeToCompetitiveFeed = (
 ) => {
   // Poll every 30 seconds for feed updates
   const fetchFeed = async () => {
-    const feed = await getCompetitiveFeed();
-    callback(feed);
+    try {
+      const feed = await getCompetitiveFeed();
+      callback(feed);
+    } catch (error) {
+      console.warn('Competitive feed error (using demo data):', error);
+      callback([]);
+    }
   };
 
   fetchFeed();

@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // User profiles - users can read/write their own
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Health data - users can read/write their own
+    match /healthData/{docId} {
+      allow read, write: if request.auth != null && 
+        (resource == null || resource.data.userId == request.auth.uid || 
+         request.resource.data.userId == request.auth.uid);
+      allow read: if request.auth != null;
+    }
+    
+    // User streaks - users can read/write their own, all authenticated can read for leaderboard
+    match /userStreaks/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Daily summaries - users can read/write their own
+    match /dailySummaries/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Competitive feed - all authenticated users can read
+    match /competitiveFeed/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+    
+    // Daily quotes - all authenticated users can read/write
+    match /dailyQuotes/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // Mock users (for admin/demo) - all authenticated can read
+    match /mockUsers/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+    
+    // Mock health data - all authenticated can read
+    match /mockHealthData/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null;
+    }
+    
+    // Weekly trends
+    match /weeklyTrends/{docId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

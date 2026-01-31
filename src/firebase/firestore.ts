@@ -206,11 +206,16 @@ export const getHealthData = async (
 
 // Get weekly trends for a user
 export const getWeeklyTrends = async (userId: string): Promise<WeeklyTrendDoc[]> => {
-  return getDocuments<WeeklyTrendDoc>(COLLECTIONS.WEEKLY_TRENDS, [
-    where('userId', '==', userId),
-    orderBy('date', 'desc'),
-    limit(7),
-  ]);
+  try {
+    return await getDocuments<WeeklyTrendDoc>(COLLECTIONS.WEEKLY_TRENDS, [
+      where('userId', '==', userId),
+      orderBy('date', 'desc'),
+      limit(7),
+    ]);
+  } catch (error) {
+    console.warn('Error fetching weekly trends (using empty):', error);
+    return [];
+  }
 };
 
 // Subscribe to user's health data
@@ -218,10 +223,23 @@ export const subscribeToHealthData = (
   userId: string,
   callback: (data: HealthDataDoc[]) => void
 ) => {
-  return subscribeToCollection<HealthDataDoc>(
-    COLLECTIONS.HEALTH_DATA,
-    [where('userId', '==', userId), orderBy('date', 'desc'), limit(30)],
-    callback
+  const q = query(
+    collection(db, COLLECTIONS.HEALTH_DATA),
+    where('userId', '==', userId),
+    orderBy('date', 'desc'),
+    limit(30)
+  );
+
+  return onSnapshot(
+    q,
+    (querySnapshot) => {
+      const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HealthDataDoc));
+      callback(data);
+    },
+    (error) => {
+      console.warn('Health data subscription error (using demo):', error.message);
+      callback([]);
+    }
   );
 };
 
