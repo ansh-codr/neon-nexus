@@ -47,14 +47,12 @@ const ScrollExpandMedia = ({
     setMediaFullyExpanded(false);
   }, [mediaType]);
 
-  // Activate scroll hijacking only when section is in view
+  // Only attach wheel/touch interceptors while this section is in view.
+  // (We still allow normal page scrolling when scrollProgress is 0 or 1
+  // and the user scrolls in the non-interactive direction.)
   useEffect(() => {
-    if (isInView && !mediaFullyExpanded) {
-      setIsActive(true);
-    } else if (mediaFullyExpanded && showContent) {
-      setIsActive(false);
-    }
-  }, [isInView, mediaFullyExpanded, showContent]);
+    setIsActive(isInView);
+  }, [isInView]);
 
   useEffect(() => {
     if (!isActive) return;
@@ -67,30 +65,25 @@ const ScrollExpandMedia = ({
       const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
       if (!inViewport) return;
 
-      if (mediaFullyExpanded && e.deltaY < 0 && scrollProgress >= 1) {
-        // Allow scrolling back up
-        const newProgress = Math.max(scrollProgress - Math.abs(e.deltaY) * 0.0009, 0);
-        if (newProgress < 1) {
-          setMediaFullyExpanded(false);
-          setShowContent(false);
-        }
-        setScrollProgress(newProgress);
-        e.preventDefault();
-      } else if (!mediaFullyExpanded) {
-        e.preventDefault();
-        const scrollDelta = e.deltaY * 0.0009;
-        const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
-          1
-        );
-        setScrollProgress(newProgress);
+      const speed = 0.0009;
 
-        if (newProgress >= 1) {
-          setMediaFullyExpanded(true);
-          setShowContent(true);
-        } else if (newProgress < 0.75) {
-          setShowContent(false);
-        }
+      // Expand (scroll down) while progress < 1
+      if (e.deltaY > 0 && scrollProgress < 1) {
+        e.preventDefault();
+        const newProgress = Math.min(scrollProgress + e.deltaY * speed, 1);
+        setScrollProgress(newProgress);
+        setMediaFullyExpanded(newProgress >= 1);
+        setShowContent(newProgress >= 0.75);
+        return;
+      }
+
+      // Contract (scroll up) while progress > 0
+      if (e.deltaY < 0 && scrollProgress > 0) {
+        e.preventDefault();
+        const newProgress = Math.max(scrollProgress + e.deltaY * speed, 0);
+        setScrollProgress(newProgress);
+        setMediaFullyExpanded(newProgress >= 1);
+        setShowContent(newProgress >= 0.75);
       }
     };
 
@@ -110,23 +103,29 @@ const ScrollExpandMedia = ({
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
 
-      if (!mediaFullyExpanded) {
+      // Expand/contract within this section, but allow normal scrolling
+      // once we're fully expanded and the user continues scrolling down.
+      const expandFactor = 0.005;
+      const contractFactor = 0.008;
+
+      // Expand
+      if (deltaY > 0 && scrollProgress < 1) {
         e.preventDefault();
-        const scrollFactor = deltaY < 0 ? 0.008 : 0.005;
-        const scrollDelta = deltaY * scrollFactor;
-        const newProgress = Math.min(
-          Math.max(scrollProgress + scrollDelta, 0),
-          1
-        );
+        const newProgress = Math.min(scrollProgress + deltaY * expandFactor, 1);
         setScrollProgress(newProgress);
+        setMediaFullyExpanded(newProgress >= 1);
+        setShowContent(newProgress >= 0.75);
+        setTouchStartY(touchY);
+        return;
+      }
 
-        if (newProgress >= 1) {
-          setMediaFullyExpanded(true);
-          setShowContent(true);
-        } else if (newProgress < 0.75) {
-          setShowContent(false);
-        }
-
+      // Contract
+      if (deltaY < 0 && scrollProgress > 0) {
+        e.preventDefault();
+        const newProgress = Math.max(scrollProgress + deltaY * contractFactor, 0);
+        setScrollProgress(newProgress);
+        setMediaFullyExpanded(newProgress >= 1);
+        setShowContent(newProgress >= 0.75);
         setTouchStartY(touchY);
       }
     };
