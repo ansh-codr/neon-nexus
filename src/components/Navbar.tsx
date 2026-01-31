@@ -1,4 +1,4 @@
-import { Activity, Menu, X, LayoutDashboard, LogOut, User } from "lucide-react";
+import { Activity, Menu, X, LayoutDashboard, LogOut, User, Gamepad2 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CyberButton from "./CyberButton";
@@ -78,6 +78,15 @@ export const Navbar = () => {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <AudioButton />
+            <Link to="/games">
+              <Button 
+                variant="ghost" 
+                className="font-mono text-sm uppercase tracking-wider text-fuchsia-400 hover:text-fuchsia-300 hover:bg-fuchsia-500/10 transition-all duration-300 flex items-center gap-2"
+              >
+                <Gamepad2 className="w-4 h-4" />
+                Arcade
+              </Button>
+            </Link>
             <Link to="/dashboard">
               <Button 
                 variant="ghost" 
@@ -210,6 +219,15 @@ export const Navbar = () => {
                 </a>
               ))}
               <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-border">
+                <Link to="/games" onClick={() => setIsOpen(false)}>
+                  <Button 
+                    variant="outline" 
+                    className="w-full font-mono text-sm uppercase tracking-wider border-fuchsia-500/30 hover:border-fuchsia-500 text-fuchsia-400 flex items-center justify-center gap-2"
+                  >
+                    <Gamepad2 className="w-4 h-4" />
+                    Arcade
+                  </Button>
+                </Link>
                 <Link to="/dashboard" onClick={() => setIsOpen(false)}>
                   <Button 
                     variant="outline" 
