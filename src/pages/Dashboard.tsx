@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
@@ -9,8 +9,10 @@ import WeeklyTrends from "@/components/dashboard/WeeklyTrends";
 import SmartSuggestions from "@/components/dashboard/SmartSuggestions";
 import ExamModeToggle from "@/components/dashboard/ExamModeToggle";
 import HealthInputModal, { AddHealthDataButton } from "@/components/dashboard/HealthInputModal";
+import Leaderboard, { LeaderboardUser } from "@/components/dashboard/Leaderboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useHealthData } from "@/hooks/useHealthData";
+import { subscribeToLeaderboard, LeaderboardEntry } from "@/firebase";
 import { User, Calendar, Loader2, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -29,7 +31,25 @@ const Dashboard = () => {
   } = useHealthData();
 
   const [showInputModal, setShowInputModal] = useState(false);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
   const examMode = userProfile?.examMode || false;
+
+  // Subscribe to leaderboard
+  useEffect(() => {
+    const unsubscribe = subscribeToLeaderboard((entries: LeaderboardEntry[]) => {
+      const leaderboardUsers: LeaderboardUser[] = entries.map((entry, index) => ({
+        id: entry.userId,
+        name: entry.name,
+        score: Math.round(entry.avgScore),
+        rank: index + 1,
+        avatar: entry.avatar,
+        streak: entry.dataCount,
+      }));
+      setLeaderboard(leaderboardUsers);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // Get today's date
   const today = new Date().toLocaleDateString('en-US', {
@@ -286,9 +306,14 @@ const Dashboard = () => {
                   />
                 ) : (
                   <div
-                    className="p-8 rounded-lg border border-dashed text-center"
+                    className="p-6 rounded-lg border border-dashed text-center"
                     style={{ borderColor: `${examMode ? "#a855f7" : "#00ff9d"}40` }}
                   >
+                    <img
+                      src="/images/data not.jpg"
+                      alt="No data"
+                      className="w-32 h-32 mx-auto mb-4 rounded-lg opacity-80"
+                    />
                     <p className="text-muted-foreground font-mono text-sm mb-4">
                       No health data logged today
                     </p>
@@ -315,13 +340,22 @@ const Dashboard = () => {
               />
             </div>
 
-            {/* Right Column - Weekly Trends */}
-            <div className="lg:col-span-1">
+            {/* Right Column - Weekly Trends & Leaderboard */}
+            <div className="lg:col-span-1 space-y-6">
               <WeeklyTrends 
                 data={weeklyData} 
                 examMode={examMode} 
                 summary={weeklySummary || "Start tracking to see your weekly trends!"} 
               />
+              
+              {/* Leaderboard */}
+              {leaderboard.length > 0 && (
+                <Leaderboard 
+                  users={leaderboard} 
+                  examMode={examMode}
+                  currentUserId={user?.uid}
+                />
+              )}
             </div>
           </div>
         )}

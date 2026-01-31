@@ -38,9 +38,29 @@ export {
   serverTimestamp,
 } from './firestore';
 
+// Admin exports
+export {
+  ADMIN_COLLECTIONS,
+  getAllUsers,
+  getAllHealthData,
+  createMockUser,
+  updateMockUser,
+  deleteMockUser,
+  createMockHealthData,
+  getLeaderboard,
+  subscribeToLeaderboard,
+  initializeMockData,
+} from './admin';
+
 // Type exports
 export type {
   UserProfile,
   HealthDataDoc,
   WeeklyTrendDoc,
 } from './firestore';
+
+export type {
+  MockUser,
+  MockHealthData,
+  LeaderboardEntry,
+} from './admin';
