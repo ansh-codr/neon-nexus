@@ -7,6 +7,11 @@ import {
   HealthDataDoc,
   WeeklyTrendDoc,
 } from '@/firebase';
+import {
+  DEMO_HEALTH_DATA,
+  DEMO_WEEKLY_DATA,
+  DEMO_INSIGHTS,
+} from '@/firebase/demoData';
 
 export interface HealthMetrics {
   sleepHours: number;
@@ -118,20 +123,46 @@ export const useHealthData = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [todayData, setTodayData] = useState<HealthMetrics | null>(null);
-  const [weeklyData, setWeeklyData] = useState<WeeklyDataPoint[]>([]);
-  const [insights, setInsights] = useState<string[]>([]);
+  const [weeklyData, setWeeklyData] = useState<WeeklyDataPoint[]>(DEMO_WEEKLY_DATA);
+  const [insights, setInsights] = useState<string[]>(DEMO_INSIGHTS);
   const [weeklySummary, setWeeklySummary] = useState<string>('');
+  const [useDemoMode, setUseDemoMode] = useState(false);
 
   const today = new Date().toISOString().split('T')[0];
 
   // Subscribe to real-time health data updates
   useEffect(() => {
     if (!user) {
+      // Demo mode for unauthenticated users
+      setUseDemoMode(true);
+      setTodayData(DEMO_HEALTH_DATA);
+      setWeeklyData(DEMO_WEEKLY_DATA);
+      setInsights(DEMO_INSIGHTS);
+      setWeeklySummary('Demo mode: 7.3 hours average sleep and 76 average health score. You\'re building positive momentum!');
       setLoading(false);
       return;
     }
 
+    let timeoutId: NodeJS.Timeout;
+    let hasReceivedData = false;
+
+    // Set timeout fallback to demo data
+    timeoutId = setTimeout(() => {
+      if (!hasReceivedData) {
+        console.warn('Health data timeout - using demo fallback');
+        setUseDemoMode(true);
+        setTodayData(DEMO_HEALTH_DATA);
+        setWeeklyData(DEMO_WEEKLY_DATA);
+        setInsights(DEMO_INSIGHTS);
+        setLoading(false);
+      }
+    }, 5000);
+
     const unsubscribe = subscribeToHealthData(user.uid, (data: HealthDataDoc[]) => {
+      hasReceivedData = true;
+      clearTimeout(timeoutId);
+      setUseDemoMode(false);
+
       // Find today's data
       const todayEntry = data.find(d => d.date === today);
       
@@ -148,23 +179,34 @@ export const useHealthData = () => {
         setTodayData(metrics);
         setInsights(generateInsights(metrics, userProfile?.examMode || false));
       } else {
+        // No today's data, but user is authenticated - show empty state
         setTodayData(null);
+        setInsights(["Log your health data to get personalized insights!"]);
       }
 
       // Convert to weekly data format (last 7 days)
-      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const weekly = data.slice(0, 7).reverse().map(d => ({
-        day: days[new Date(d.date).getDay()],
-        sleep: d.sleepHours,
-        steps: d.steps,
-        score: d.healthScore,
-      }));
-      setWeeklyData(weekly);
-      setWeeklySummary(generateWeeklySummary(weekly, userProfile?.examMode || false));
+      if (data.length > 0) {
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const weekly = data.slice(0, 7).reverse().map(d => ({
+          day: days[new Date(d.date).getDay()],
+          sleep: d.sleepHours,
+          steps: d.steps,
+          score: d.healthScore,
+        }));
+        setWeeklyData(weekly);
+        setWeeklySummary(generateWeeklySummary(weekly, userProfile?.examMode || false));
+      } else {
+        // No data at all - use demo for visual appeal
+        setWeeklyData(DEMO_WEEKLY_DATA);
+        setWeeklySummary("Start tracking to see your weekly trends!");
+      }
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => {
+      clearTimeout(timeoutId);
+      unsubscribe();
+    };
   }, [user, today, userProfile?.examMode]);
 
   // Fetch weekly trends separately
@@ -242,6 +284,7 @@ export const useHealthData = () => {
     saveToday,
     refreshInsights,
     isAuthenticated: !!user,
+    useDemoMode,
   };
 };
 

@@ -1,13 +1,55 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Component as EtherealShadow } from "@/components/ui/etheral-shadow";
 import { Button } from "@/components/ui/button";
 import GlitchText from "@/components/GlitchText";
+import { useAuth } from "@/contexts/AuthContext";
+import { DEMO_ACCOUNT } from "@/firebase/demoData";
+import { Loader2, Zap, Shield, Activity, BookOpen, Trophy, Brain } from "lucide-react";
+import { toast } from "sonner";
 
 const Demo = () => {
+  const navigate = useNavigate();
+  const { login, signup } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const features = [
+    { icon: Activity, label: "Health Tracking" },
+    { icon: Brain, label: "AI Insights" },
+    { icon: BookOpen, label: "Study Streaks" },
+    { icon: Trophy, label: "Leaderboard" },
+    { icon: Shield, label: "Exam Mode" },
+  ];
+
+  const handleDemoLogin = async () => {
+    setLoading(true);
+    try {
+      await login(DEMO_ACCOUNT.email, DEMO_ACCOUNT.password);
+      toast.success("Welcome to the demo!");
+      navigate("/dashboard");
+    } catch (loginError: any) {
+      if (loginError?.code === "auth/user-not-found" || loginError?.code === "auth/invalid-credential") {
+        try {
+          await signup(DEMO_ACCOUNT.email, DEMO_ACCOUNT.password, DEMO_ACCOUNT.displayName);
+          toast.success("Demo account created!");
+          navigate("/dashboard");
+        } catch {
+          navigate("/dashboard");
+          toast.info("Viewing in demo mode");
+        }
+      } else {
+        navigate("/dashboard");
+        toast.info("Viewing in demo mode");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Ethereal Shadow Background - Cyberpunk Green/Magenta Mix */}
+      {/* Ethereal Shadow Background */}
       <div className="absolute inset-0 z-0">
         <EtherealShadow
           color="rgba(0, 255, 157, 0.4)"
@@ -21,17 +63,40 @@ const Demo = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
             >
-              <GlitchText className="md:text-7xl text-6xl lg:text-8xl font-bold text-center text-foreground mb-6">
-                ETHEREAL SHADOWS
+              <GlitchText className="md:text-7xl text-5xl lg:text-8xl font-bold text-center text-foreground mb-6">
+                NEON NEXUS
               </GlitchText>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.8 }}
-                className="text-xl md:text-2xl text-muted-foreground font-mono mb-8 max-w-3xl mx-auto"
+                className="text-xl md:text-2xl text-muted-foreground font-mono mb-4 max-w-3xl mx-auto"
               >
-                Experience the fluid dynamics of cyberpunk aesthetics. Watch as reality bends and shifts beneath the neon glow.
+                Campus Health & Productivity Tracking
               </motion.p>
+
+              {/* Features Row */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="flex flex-wrap justify-center gap-4 mb-8"
+              >
+                {features.map((f, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono"
+                    style={{
+                      background: "rgba(0, 255, 157, 0.1)",
+                      border: "1px solid rgba(0, 255, 157, 0.3)",
+                      color: "#00ff9d",
+                    }}
+                  >
+                    <f.icon className="w-3 h-3" />
+                    {f.label}
+                  </div>
+                ))}
+              </motion.div>
               
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -39,32 +104,51 @@ const Demo = () => {
                 transition={{ delay: 1, duration: 0.8 }}
                 className="flex flex-col sm:flex-row gap-4 justify-center items-center"
               >
-                <Link to="/login">
-                  <Button 
-                    size="lg"
-                    className="relative group overflow-hidden bg-primary hover:bg-primary/90 text-background font-bold py-6 px-8 font-mono uppercase tracking-widest transition-all duration-300"
-                  >
-                    <span className="relative z-10">Access System</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </Button>
-                </Link>
+                <Button 
+                  onClick={handleDemoLogin}
+                  disabled={loading}
+                  size="lg"
+                  className="relative group overflow-hidden bg-primary hover:bg-primary/90 text-background font-bold py-6 px-8 font-mono uppercase tracking-widest transition-all duration-300"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Loading Demo...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4 mr-2" />
+                      Try Demo
+                    </>
+                  )}
+                </Button>
                 
-                <Link to="/signup">
+                <Link to="/login">
                   <Button 
                     size="lg"
                     variant="outline"
                     className="relative group border-secondary/50 hover:border-secondary bg-background/50 hover:bg-secondary/10 text-secondary font-bold py-6 px-8 font-mono uppercase tracking-widest transition-all duration-300"
                   >
-                    Request Access
+                    Sign In
                   </Button>
                 </Link>
+              </motion.div>
+
+              {/* Demo credentials hint */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2, duration: 0.8 }}
+                className="mt-6 text-xs text-muted-foreground/70 font-mono"
+              >
+                Demo: {DEMO_ACCOUNT.email} / {DEMO_ACCOUNT.password}
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.4, duration: 0.8 }}
-                className="mt-12"
+                className="mt-8"
               >
                 <Link
                   to="/"
@@ -78,7 +162,7 @@ const Demo = () => {
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
-                  Return to Main Terminal
+                  Back to Home
                 </Link>
               </motion.div>
             </motion.div>

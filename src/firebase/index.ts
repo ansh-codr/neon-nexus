@@ -81,6 +81,25 @@ export {
   PROMPT_TEMPLATES,
 } from './aiService';
 
+// Demo Data exports
+export {
+  DEMO_ACCOUNT,
+  DEMO_HEALTH_DATA,
+  DEMO_STREAK_DATA,
+  DEMO_WEEKLY_DATA,
+  DEMO_COMPETITIVE_FEED,
+  DEMO_PUBLIC_LEADERBOARD,
+  DEMO_INSIGHTS,
+  DEMO_QUOTES,
+  DEMO_DEDICATION_INSIGHTS,
+  DEMO_COMPETITIVE_INSIGHT,
+  DEMO_AGGREGATE_STATS,
+  isDemoMode,
+  getDemoHealthData,
+  getRandomQuote,
+  getDemoInsight,
+} from './demoData';
+
 // Type exports
 export type {
   UserProfile,

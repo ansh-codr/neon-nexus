@@ -154,6 +154,10 @@ export const subscribeToCollection = <T>(
   return onSnapshot(q, (querySnapshot) => {
     const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
     callback(data);
+  }, (error) => {
+    console.warn(`Subscription error for ${collectionName}:`, error);
+    // Return empty array on error to prevent loading state hang
+    callback([]);
   });
 };
 

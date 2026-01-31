@@ -31,7 +31,8 @@ const Dashboard = () => {
     weeklySummary, 
     saveToday,
     refreshInsights,
-    isAuthenticated 
+    isAuthenticated,
+    useDemoMode 
   } = useHealthData();
 
   const {
@@ -116,7 +117,7 @@ const Dashboard = () => {
   }
 
   // Show login prompt if not authenticated
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !useDemoMode) {
     return (
       <div className="relative min-h-screen w-full overflow-hidden bg-background">
         <Navbar />
@@ -174,11 +175,11 @@ const Dashboard = () => {
                 Sign In
               </Button>
               <Button
-                onClick={() => navigate('/signup')}
+                onClick={() => navigate('/demo')}
                 variant="outline"
                 className="font-mono uppercase tracking-wider"
               >
-                Create Account
+                Try Demo
               </Button>
             </div>
           </motion.div>
@@ -230,6 +231,30 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <main className="relative z-10 pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* Demo Mode Banner */}
+        {useDemoMode && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-4 rounded-lg border text-center"
+            style={{
+              background: "rgba(251, 191, 36, 0.1)",
+              borderColor: "rgba(251, 191, 36, 0.3)",
+            }}
+          >
+            <p className="text-sm font-mono text-amber-400">
+              📊 Demo Mode — You're viewing sample data. {" "}
+              <button
+                onClick={() => navigate('/login')}
+                className="underline hover:text-amber-300"
+              >
+                Sign in
+              </button>
+              {" "}to save your own data.
+            </p>
+          </motion.div>
+        )}
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

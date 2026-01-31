@@ -13,6 +13,12 @@ import {
   isStreakAtRisk,
   getAggregateStats,
 } from '@/firebase/streaks';
+import {
+  DEMO_STREAK_DATA,
+  DEMO_COMPETITIVE_FEED,
+  DEMO_PUBLIC_LEADERBOARD,
+  DEMO_AGGREGATE_STATS,
+} from '@/firebase/demoData';
 
 export interface UseStreakReturn {
   streak: UserStreakRecord | null;
@@ -30,72 +36,150 @@ export interface UseStreakReturn {
   } | null;
 }
 
+// Default streak for new users
+const DEFAULT_STREAK: UserStreakRecord = {
+  ...DEMO_STREAK_DATA,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
+
 export const useStreak = (): UseStreakReturn => {
   const { user, userProfile } = useAuth();
   const [streak, setStreak] = useState<UserStreakRecord | null>(null);
-  const [publicLeaderboard, setPublicLeaderboard] = useState<PublicUserSnapshot[]>([]);
-  const [competitiveFeed, setCompetitiveFeed] = useState<CompetitiveFeedItem[]>([]);
+  const [publicLeaderboard, setPublicLeaderboard] = useState<PublicUserSnapshot[]>(DEMO_PUBLIC_LEADERBOARD);
+  const [competitiveFeed, setCompetitiveFeed] = useState<CompetitiveFeedItem[]>(DEMO_COMPETITIVE_FEED);
   const [loading, setLoading] = useState(true);
   const [isAtRisk, setIsAtRisk] = useState(false);
   const [aggregateStats, setAggregateStats] = useState<{
     activeUsers: number;
     topStreak: number;
     avgConsistency: number;
-  } | null>(null);
+  } | null>(DEMO_AGGREGATE_STATS);
 
   // Initialize streak data
   useEffect(() => {
     if (!user) {
-      setStreak(null);
+      // Set demo data for unauthenticated users
+      setStreak(DEFAULT_STREAK);
+      setIsAtRisk(false);
       setLoading(false);
       return;
     }
 
     const displayName = userProfile?.displayName || user.displayName || user.email?.split('@')[0] || 'User';
+    let isMounted = true;
 
-    // Initialize user streak
-    getOrCreateUserStreak(user.uid, displayName)
-      .then(initialStreak => {
-        setStreak(initialStreak);
-        setIsAtRisk(isStreakAtRisk(initialStreak));
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Error initializing streak:', error);
-        setLoading(false);
-      });
+    // Initialize user streak with timeout fallback
+    const initStreak = async () => {
+      try {
+        const initialStreak = await Promise.race([
+          getOrCreateUserStreak(user.uid, displayName),
+          new Promise<UserStreakRecord>((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout')), 5000)
+          )
+        ]);
+        
+        if (isMounted) {
+          setStreak(initialStreak);
+          setIsAtRisk(isStreakAtRisk(initialStreak));
+          setLoading(false);
+        }
+      } catch (error) {
+        console.warn('Using fallback streak data:', error);
+        if (isMounted) {
+          // Use demo data as fallback
+          setStreak({
+            ...DEFAULT_STREAK,
+            userId: user.uid,
+            displayName,
+          });
+          setIsAtRisk(false);
+          setLoading(false);
+        }
+      }
+    };
+
+    initStreak();
 
     // Subscribe to real-time updates
     const unsubStreak = subscribeToUserStreak(user.uid, (updatedStreak) => {
-      if (updatedStreak) {
+      if (updatedStreak && isMounted) {
         setStreak(updatedStreak);
         setIsAtRisk(isStreakAtRisk(updatedStreak));
       }
     });
 
-    return () => unsubStreak();
+    return () => {
+      isMounted = false;
+      unsubStreak();
+    };
   }, [user, userProfile]);
 
-  // Subscribe to public leaderboard
+  // Subscribe to public leaderboard with fallback
   useEffect(() => {
-    const unsub = subscribeToPublicLeaderboard(setPublicLeaderboard, 10);
-    return () => unsub();
+    let timeoutId: NodeJS.Timeout;
+    
+    // Set timeout fallback
+    timeoutId = setTimeout(() => {
+      if (publicLeaderboard.length === 0) {
+        setPublicLeaderboard(DEMO_PUBLIC_LEADERBOARD);
+      }
+    }, 3000);
+
+    const unsub = subscribeToPublicLeaderboard((data) => {
+      clearTimeout(timeoutId);
+      if (data.length > 0) {
+        setPublicLeaderboard(data);
+      } else {
+        setPublicLeaderboard(DEMO_PUBLIC_LEADERBOARD);
+      }
+    }, 10);
+
+    return () => {
+      clearTimeout(timeoutId);
+      unsub();
+    };
   }, []);
 
-  // Subscribe to competitive feed
+  // Subscribe to competitive feed with fallback
   useEffect(() => {
-    const unsub = subscribeToCompetitiveFeed(setCompetitiveFeed);
-    return () => unsub();
+    let timeoutId: NodeJS.Timeout;
+    
+    timeoutId = setTimeout(() => {
+      if (competitiveFeed.length === 0) {
+        setCompetitiveFeed(DEMO_COMPETITIVE_FEED);
+      }
+    }, 3000);
+
+    const unsub = subscribeToCompetitiveFeed((data) => {
+      clearTimeout(timeoutId);
+      if (data.length > 0) {
+        setCompetitiveFeed(data);
+      } else {
+        setCompetitiveFeed(DEMO_COMPETITIVE_FEED);
+      }
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      unsub();
+    };
   }, []);
 
-  // Load aggregate stats
+  // Load aggregate stats with fallback
   useEffect(() => {
     const loadStats = async () => {
       try {
-        const stats = await getAggregateStats();
+        const stats = await Promise.race([
+          getAggregateStats(),
+          new Promise<typeof DEMO_AGGREGATE_STATS>((resolve) => 
+            setTimeout(() => resolve(DEMO_AGGREGATE_STATS), 3000)
+          )
+        ]);
         setAggregateStats(stats);
       } catch (error) {
-        console.error('Error loading aggregate stats:', error);
+        console.warn('Using fallback aggregate stats:', error);
+        setAggregateStats(DEMO_AGGREGATE_STATS);
       }
     };
 
