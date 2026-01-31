@@ -100,6 +100,25 @@ export {
   getDemoInsight,
 } from './demoData';
 
+// Google Fit exports
+export {
+  GOOGLE_FIT_SCOPES,
+  connectGoogleFit,
+  disconnectGoogleFit,
+  isGoogleFitConnected,
+  fetchTodayData,
+  fetchWeeklyData,
+  getCachedFitData,
+  calculateStreakFromFitData,
+  calculateDedicationFromFit,
+  formatDistance,
+} from './googleFit';
+
+export type {
+  GoogleFitData,
+  DailyFitData,
+} from './googleFit';
+
 // Type exports
 export type {
   UserProfile,

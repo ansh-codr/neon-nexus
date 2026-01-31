@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import Demo from "./pages/Demo";
 import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
+import ConnectFit from "./pages/ConnectFit";
 import Games from "./pages/Games";
 import TicTacToe from "./pages/games/TicTacToe";
 import MemoryFlip from "./pages/games/MemoryFlip";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/demo" element={<Demo />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/connect-fit" element={<ConnectFit />} />
             <Route path="/games" element={<Games />} />
             <Route path="/games/tic-tac-toe" element={<TicTacToe />} />
             <Route path="/games/memory-flip" element={<MemoryFlip />} />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Component as EtherealShadow } from "@/components/ui/etheral-shadow";
 import HealthScoreRing from "@/components/dashboard/HealthScoreRing";
@@ -16,8 +16,10 @@ import StudyLogModal from "@/components/dashboard/StudyLogModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { useHealthData } from "@/hooks/useHealthData";
 import { useStreak } from "@/hooks/useStreak";
+import { useGoogleFit } from "@/hooks/useGoogleFit";
 import { generateDedicationInsight, generateCompetitiveInsight } from "@/firebase";
-import { User, Calendar, Loader2, LogIn, BookOpen } from "lucide-react";
+import { formatDistance } from "@/firebase/googleFit";
+import { User, Calendar, Loader2, LogIn, BookOpen, Activity, Footprints, Flame, Timer, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
@@ -44,6 +46,14 @@ const Dashboard = () => {
     logHealthActivity,
     logStudyActivity,
   } = useStreak();
+
+  const {
+    isConnected: fitConnected,
+    todayData: fitTodayData,
+    streak: fitStreak,
+    dedication: fitDedication,
+    isLoading: fitLoading,
+  } = useGoogleFit();
 
   const [showInputModal, setShowInputModal] = useState(false);
   const [showStudyModal, setShowStudyModal] = useState(false);
@@ -430,6 +440,79 @@ const Dashboard = () => {
                     </Button>
                   </div>
                 )}
+              </motion.div>
+
+              {/* Google Fit Integration Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className="p-4 sm:p-5 rounded-lg border bg-card/50 backdrop-blur-sm"
+                style={{ borderColor: fitConnected ? 'rgba(0, 255, 157, 0.3)' : 'rgba(255, 255, 255, 0.1)' }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Activity className={`w-4 h-4 ${fitConnected ? 'text-primary' : 'text-muted-foreground'}`} />
+                    <h3 className={`font-terminal text-xs uppercase tracking-wider ${fitConnected ? 'text-primary' : 'text-muted-foreground'}`}>
+                      Google Fit
+                    </h3>
+                  </div>
+                  {fitConnected ? (
+                    <span className="flex items-center gap-1 text-[10px] font-mono text-primary">
+                      <CheckCircle2 className="w-3 h-3" />
+                      Connected
+                    </span>
+                  ) : (
+                    <Link to="/connect-fit">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="h-7 px-2 text-[10px] font-mono text-primary hover:bg-primary/10"
+                      >
+                        Connect
+                        <ArrowRight className="w-3 h-3 ml-1" />
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+
+                {fitConnected && fitTodayData ? (
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-white/5 rounded p-2 text-center">
+                      <Footprints className="w-3.5 h-3.5 mx-auto mb-1 text-primary" />
+                      <p className="font-display text-lg text-primary">{fitTodayData.steps.toLocaleString()}</p>
+                      <p className="font-mono text-[9px] text-muted-foreground">Steps</p>
+                    </div>
+                    <div className="bg-white/5 rounded p-2 text-center">
+                      <Flame className="w-3.5 h-3.5 mx-auto mb-1 text-orange-400" />
+                      <p className="font-display text-lg text-orange-400">{fitTodayData.calories}</p>
+                      <p className="font-mono text-[9px] text-muted-foreground">Calories</p>
+                    </div>
+                    <div className="bg-white/5 rounded p-2 text-center">
+                      <Timer className="w-3.5 h-3.5 mx-auto mb-1 text-cyan-400" />
+                      <p className="font-display text-lg text-cyan-400">{fitTodayData.activeMinutes}</p>
+                      <p className="font-mono text-[9px] text-muted-foreground">Active Min</p>
+                    </div>
+                    <div className="bg-white/5 rounded p-2 text-center">
+                      <Activity className="w-3.5 h-3.5 mx-auto mb-1 text-fuchsia-400" />
+                      <p className="font-display text-lg text-fuchsia-400">{fitStreak.current}</p>
+                      <p className="font-mono text-[9px] text-muted-foreground">Day Streak</p>
+                    </div>
+                  </div>
+                ) : !fitConnected ? (
+                  <div className="text-center py-2">
+                    <p className="text-[11px] text-muted-foreground font-mono mb-2">
+                      Sync real health data from your Android phone
+                    </p>
+                    <p className="text-[9px] text-muted-foreground/60 font-mono">
+                      No smartwatch required
+                    </p>
+                  </div>
+                ) : fitLoading ? (
+                  <div className="flex items-center justify-center py-4">
+                    <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                  </div>
+                ) : null}
               </motion.div>
 
               {/* Smart Suggestions */}
