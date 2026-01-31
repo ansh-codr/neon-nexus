@@ -22,11 +22,11 @@ export const CTASection = () => {
   };
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section className="relative py-16 sm:py-24 lg:py-32 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 circuit-grid opacity-30" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl" />
-      <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-secondary/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-primary/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 right-1/4 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] bg-secondary/10 rounded-full blur-3xl" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <motion.div
@@ -36,12 +36,12 @@ export const CTASection = () => {
           transition={{ duration: 0.6 }}
         >
           {/* Icon */}
-          <div className="inline-flex p-4 border-2 border-primary cyber-chamfer neon-glow-lg mb-8 animate-pulse-glow">
-            <Zap className="h-8 w-8 text-primary" />
+          <div className="inline-flex p-3 sm:p-4 border-2 border-primary cyber-chamfer neon-glow-lg mb-6 sm:mb-8 animate-pulse-glow">
+            <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
           </div>
 
           {/* Headline */}
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-6">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-4 sm:mb-6">
             <span className="text-foreground">Ready to</span>
             <br />
             <GlitchText className="text-primary text-glow">Upgrade</GlitchText>{" "}
@@ -49,7 +49,7 @@ export const CTASection = () => {
           </h2>
 
           {/* Description */}
-          <p className="font-mono text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="font-mono text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
             <span className="text-primary">&gt;</span> Join thousands of students who have transformed their 
             health habits. Start tracking today and unlock your full potential.
           </p>

@@ -59,7 +59,7 @@ const itemVariants = {
 
 export const FeaturesSection = () => {
   return (
-    <section id="features" className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="features" className="relative py-16 sm:py-24 lg:py-32 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 circuit-grid opacity-30" />
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
@@ -71,16 +71,16 @@ export const FeaturesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <span className="font-terminal text-xs uppercase tracking-[0.3em] text-primary mb-4 block">
+          <span className="font-terminal text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-primary mb-4 block">
             &gt; System.features()
           </span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-6">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-4 sm:mb-6">
             <GlitchText className="text-foreground">Core</GlitchText>{" "}
             <span className="text-primary text-glow">Modules</span>
           </h2>
-          <p className="font-mono text-muted-foreground max-w-2xl mx-auto">
+          <p className="font-mono text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
             Comprehensive health tracking features designed for the modern student lifestyle.
           </p>
         </motion.div>
@@ -91,16 +91,16 @@ export const FeaturesSection = () => {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 -skew-y-1"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 sm:-skew-y-1"
         >
           {features.map((feature, index) => (
-            <motion.div key={index} variants={itemVariants} className="skew-y-1">
+            <motion.div key={index} variants={itemVariants} className="sm:skew-y-1">
               <CyberCard
                 variant="terminal"
                 hoverEffect
                 className="h-full"
               >
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                   {/* Icon */}
                   <div
                     className={`inline-flex p-3 border cyber-chamfer-sm mb-4 ${

@@ -31,11 +31,11 @@ const steps = [
 
 export const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="relative py-24 lg:py-32 bg-muted/20">
+    <section id="how-it-works" className="relative py-16 sm:py-24 lg:py-32 bg-muted/20">
       {/* Background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 circuit-grid opacity-20" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[400px] sm:h-[800px] bg-primary/5 rounded-full blur-3xl" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -45,16 +45,16 @@ export const HowItWorksSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
-          <span className="font-terminal text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">
+          <span className="font-terminal text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-secondary mb-4 block">
             &gt; System.initialize()
           </span>
-          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-6">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-4 sm:mb-6">
             <span className="text-foreground">How It</span>{" "}
             <GlitchText className="text-secondary text-glow-magenta">Works</GlitchText>
           </h2>
-          <p className="font-mono text-muted-foreground max-w-2xl mx-auto">
+          <p className="font-mono text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
             Get started in minutes. Track for life.
           </p>
         </motion.div>
@@ -76,20 +76,20 @@ export const HowItWorksSection = () => {
               >
                 <div className="text-center">
                   {/* Number */}
-                  <div className="font-display text-6xl md:text-7xl font-black text-border/50 absolute -top-4 left-1/2 -translate-x-1/2 select-none">
+                  <div className="font-display text-5xl sm:text-6xl md:text-7xl font-black text-border/50 absolute -top-2 sm:-top-4 left-1/2 -translate-x-1/2 select-none">
                     {step.number}
                   </div>
 
                   {/* Icon Container */}
-                  <div className="relative z-10 mx-auto w-20 h-20 flex items-center justify-center border-2 border-primary bg-background cyber-chamfer neon-glow mb-6">
-                    <step.icon className="h-8 w-8 text-primary" />
+                  <div className="relative z-10 mx-auto w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center border-2 border-primary bg-background cyber-chamfer neon-glow mb-4 sm:mb-6">
+                    <step.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
                   </div>
 
                   {/* Content */}
-                  <h3 className="font-display text-lg uppercase tracking-wide text-foreground mb-3">
+                  <h3 className="font-display text-base sm:text-lg uppercase tracking-wide text-foreground mb-2 sm:mb-3">
                     {step.title}
                   </h3>
-                  <p className="font-mono text-sm text-muted-foreground leading-relaxed">
+                  <p className="font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     {step.description}
                   </p>
                 </div>

@@ -31,25 +31,25 @@ const CompetitiveFeed = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-5 rounded-lg border bg-card/50 backdrop-blur-sm"
+      className="p-4 sm:p-5 rounded-lg border bg-card/50 backdrop-blur-sm"
       style={{ borderColor: `${primaryColorRgba} 0.3)` }}
     >
       {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
         <div
-          className="p-2 rounded-lg"
+          className="p-1.5 sm:p-2 rounded-lg"
           style={{ background: `${primaryColorRgba} 0.1)` }}
         >
-          <TrendingUp className="w-5 h-5" style={{ color: primaryColor }} />
+          <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: primaryColor }} />
         </div>
         <div>
           <h3
-            className="font-display text-sm uppercase tracking-wider"
+            className="font-display text-xs sm:text-sm uppercase tracking-wider"
             style={{ color: primaryColor }}
           >
             Campus Pulse
           </h3>
-          <p className="text-xs text-muted-foreground font-mono">
+          <p className="text-[10px] sm:text-xs text-muted-foreground font-mono">
             Aggregate activity • No names shown
           </p>
         </div>
@@ -60,21 +60,21 @@ const CompetitiveFeed = ({
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mb-4 p-3 rounded-lg border-l-2"
+          className="mb-3 sm:mb-4 p-2.5 sm:p-3 rounded-lg border-l-2"
           style={{
             background: `${primaryColorRgba} 0.05)`,
             borderLeftColor: primaryColor,
           }}
         >
-          <p className="text-sm font-mono" style={{ color: primaryColor }}>
-            <Sparkles className="w-3 h-3 inline-block mr-2" />
+          <p className="text-xs sm:text-sm font-mono" style={{ color: primaryColor }}>
+            <Sparkles className="w-3 h-3 inline-block mr-1.5 sm:mr-2" />
             {competitiveInsight}
           </p>
         </motion.div>
       )}
 
       {/* Feed Items */}
-      <div className="space-y-3 mb-4">
+      <div className="space-y-2 sm:space-y-3 mb-3 sm:mb-4">
         <AnimatePresence mode="popLayout">
           {feedItems.map((item, index) => {
             const Icon = FEED_ICONS[item.type];
@@ -85,16 +85,16 @@ const CompetitiveFeed = ({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 10 }}
                 transition={{ delay: index * 0.1 }}
-                className="flex items-center gap-3 p-3 rounded-lg"
+                className="flex items-center gap-2 sm:gap-3 p-2.5 sm:p-3 rounded-lg"
                 style={{ background: 'rgba(0,0,0,0.2)' }}
               >
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{ background: `${primaryColorRgba} 0.2)` }}
                 >
-                  <Icon className="w-4 h-4" style={{ color: primaryColor }} />
+                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" style={{ color: primaryColor }} />
                 </div>
-                <p className="text-sm text-muted-foreground font-mono flex-1">
+                <p className="text-xs sm:text-sm text-muted-foreground font-mono flex-1">
                   {item.message}
                 </p>
                 {item.count && (
@@ -125,11 +125,11 @@ const CompetitiveFeed = ({
       {/* Mini Leaderboard - Limited Visibility */}
       {leaderboard.length > 0 && (
         <>
-          <div className="border-t border-border/50 pt-4 mt-4">
-            <p className="text-xs text-muted-foreground font-mono uppercase tracking-wider mb-3">
+          <div className="border-t border-border/50 pt-3 sm:pt-4 mt-3 sm:mt-4">
+            <p className="text-[10px] sm:text-xs text-muted-foreground font-mono uppercase tracking-wider mb-2 sm:mb-3">
               Top Dedication This Week
             </p>
-            <div className="space-y-2">
+            <div className="space-y-1.5 sm:space-y-2">
               {leaderboard.slice(0, 5).map((user, index) => {
                 const isCurrentUser = user.userId === currentUserId;
                 return (
@@ -138,7 +138,7 @@ const CompetitiveFeed = ({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 + index * 0.05 }}
-                    className={`flex items-center gap-3 p-2 rounded-lg transition-all`}
+                    className={`flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-lg transition-all`}
                     style={{
                       background: isCurrentUser ? `${primaryColorRgba} 0.1)` : 'transparent',
                       boxShadow: isCurrentUser ? `inset 0 0 0 1px ${primaryColor}` : 'none',
@@ -146,7 +146,7 @@ const CompetitiveFeed = ({
                   >
                     {/* Rank */}
                     <span
-                      className="w-6 text-center font-mono text-xs font-bold"
+                      className="w-5 sm:w-6 text-center font-mono text-[10px] sm:text-xs font-bold"
                       style={{
                         color:
                           index === 0
@@ -162,16 +162,16 @@ const CompetitiveFeed = ({
                     </span>
 
                     {/* Badge */}
-                    <span className="text-lg">{user.badge}</span>
+                    <span className="text-base sm:text-lg">{user.badge}</span>
 
                     {/* Name (anonymized option) */}
-                    <span className="flex-1 font-mono text-sm truncate">
+                    <span className="flex-1 font-mono text-xs sm:text-sm truncate">
                       {isCurrentUser ? 'You' : user.displayName.split(' ')[0]}
                     </span>
 
-                    {/* Dedication Level Badge */}
+                    {/* Dedication Level Badge - hidden on very small screens */}
                     <span
-                      className="text-xs px-2 py-0.5 rounded-full font-mono"
+                      className="hidden xs:inline-block text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-mono"
                       style={{
                         background: 'rgba(255,255,255,0.1)',
                         color: 'rgba(255,255,255,0.7)',
@@ -181,10 +181,10 @@ const CompetitiveFeed = ({
                     </span>
 
                     {/* Streak */}
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-0.5 sm:gap-1">
                       <Flame className="w-3 h-3" style={{ color: primaryColor }} />
                       <span
-                        className="font-mono text-xs font-bold"
+                        className="font-mono text-[10px] sm:text-xs font-bold"
                         style={{ color: primaryColor }}
                       >
                         {user.currentStreak}
@@ -197,7 +197,7 @@ const CompetitiveFeed = ({
           </div>
 
           {/* Privacy Note */}
-          <p className="text-xs text-muted-foreground/50 font-mono mt-4 text-center">
+          <p className="text-[10px] sm:text-xs text-muted-foreground/50 font-mono mt-3 sm:mt-4 text-center">
             Only dedication levels shown • Your data stays private
           </p>
         </>

@@ -230,7 +230,7 @@ const Dashboard = () => {
       <div className="fixed inset-0 pointer-events-none z-50 scanlines opacity-20" />
 
       {/* Main Content */}
-      <main className="relative z-10 pt-20 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <main className="relative z-10 pt-16 sm:pt-20 pb-8 sm:pb-12 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Demo Mode Banner */}
         {useDemoMode && (
           <motion.div
@@ -259,13 +259,13 @@ const Dashboard = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div>
-              <div className="flex items-center gap-3 mb-2">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                 <div
-                  className="px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider flex items-center gap-2"
+                  className="px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono uppercase tracking-wider flex items-center gap-1.5 sm:gap-2"
                   style={{
                     background: examMode ? "rgba(168, 85, 247, 0.2)" : "rgba(0, 255, 157, 0.2)",
                     border: `1px solid ${examMode ? "rgba(168, 85, 247, 0.5)" : "rgba(0, 255, 157, 0.5)"}`,
@@ -273,14 +273,16 @@ const Dashboard = () => {
                   }}
                 >
                   <User className="w-3 h-3" />
-                  {userProfile?.displayName || user?.email || 'User'}
+                  <span className="truncate max-w-[120px] sm:max-w-none">
+                    {userProfile?.displayName || user?.email || 'User'}
+                  </span>
                 </div>
                 {!todayData && (
-                  <span className="text-xs text-yellow-500 font-mono">• No data today</span>
+                  <span className="text-[10px] sm:text-xs text-yellow-500 font-mono">• No data today</span>
                 )}
               </div>
               <h1
-                className="text-3xl sm:text-4xl font-display font-bold uppercase tracking-wider"
+                className="text-2xl sm:text-3xl md:text-4xl font-display font-bold uppercase tracking-wider"
                 style={{
                   color: examMode ? "#a855f7" : "#00ff9d",
                   textShadow: `0 0 30px ${examMode ? "rgba(168, 85, 247, 0.5)" : "rgba(0, 255, 157, 0.5)"}`,
@@ -288,9 +290,9 @@ const Dashboard = () => {
               >
                 Health Dashboard
               </h1>
-              <div className="flex items-center gap-2 mt-2 text-muted-foreground">
-                <Calendar className="w-4 h-4" />
-                <span className="text-sm font-mono">{today}</span>
+              <div className="flex items-center gap-2 mt-1.5 sm:mt-2 text-muted-foreground">
+                <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="text-xs sm:text-sm font-mono">{today}</span>
               </div>
             </div>
           </div>
@@ -303,24 +305,24 @@ const Dashboard = () => {
           </div>
         ) : (
           /* Dashboard Grid */
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Left Column - Health Score & Snapshot */}
-            <div className="lg:col-span-1 space-y-6">
+            <div className="md:col-span-1 space-y-4 sm:space-y-6">
               {/* Health Score Ring */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.1 }}
-                className="p-6 rounded-lg border border-primary/20 bg-card/50 backdrop-blur-sm flex flex-col items-center"
+                className="p-4 sm:p-6 rounded-lg border border-primary/20 bg-card/50 backdrop-blur-sm flex flex-col items-center"
               >
                 <h3
-                  className="font-display text-sm uppercase tracking-wider mb-6"
+                  className="font-display text-xs sm:text-sm uppercase tracking-wider mb-4 sm:mb-6"
                   style={{ color: examMode ? "#a855f7" : "#00ff9d" }}
                 >
                   Today's Health Score
                 </h3>
-                <HealthScoreRing score={displayScore} size={180} examMode={examMode} />
-                <p className="text-xs text-muted-foreground font-mono mt-4 text-center">
+                <HealthScoreRing score={displayScore} size={160} examMode={examMode} />
+                <p className="text-[10px] sm:text-xs text-muted-foreground font-mono mt-3 sm:mt-4 text-center">
                   {!todayData
                     ? "Log your health data to see your score"
                     : examMode
@@ -354,31 +356,31 @@ const Dashboard = () => {
             </div>
 
             {/* Middle Column - Health Metrics */}
-            <div className="lg:col-span-1 space-y-6">
+            <div className="md:col-span-1 space-y-4 sm:space-y-6">
               {/* Log Buttons */}
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 <Button
                   onClick={() => setShowInputModal(true)}
-                  className="flex-1 font-mono text-xs"
+                  className="flex-1 font-mono text-[10px] sm:text-xs py-2 h-auto"
                   style={{
                     background: examMode ? "rgba(168, 85, 247, 0.2)" : "rgba(0, 255, 157, 0.2)",
                     border: `1px solid ${examMode ? "#a855f7" : "#00ff9d"}`,
                     color: examMode ? "#a855f7" : "#00ff9d",
                   }}
                 >
-                  <User className="w-4 h-4 mr-2" />
+                  <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                   Log Health
                 </Button>
                 <Button
                   onClick={() => setShowStudyModal(true)}
-                  className="flex-1 font-mono text-xs"
+                  className="flex-1 font-mono text-[10px] sm:text-xs py-2 h-auto"
                   style={{
                     background: "rgba(59, 130, 246, 0.2)",
                     border: "1px solid #3b82f6",
                     color: "#3b82f6",
                   }}
                 >
-                  <BookOpen className="w-4 h-4 mr-2" />
+                  <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 mr-1.5 sm:mr-2" />
                   Log Study
                 </Button>
               </div>
@@ -439,7 +441,7 @@ const Dashboard = () => {
             </div>
 
             {/* Right Column - Weekly Trends & Competitive Feed */}
-            <div className="lg:col-span-1 space-y-6">
+            <div className="md:col-span-2 lg:col-span-1 space-y-4 sm:space-y-6">
               <WeeklyTrends 
                 data={weeklyData} 
                 examMode={examMode} 

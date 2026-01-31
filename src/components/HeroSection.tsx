@@ -52,7 +52,7 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-wider mb-6">
+              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-wider mb-4 sm:mb-6">
                 <span className="text-foreground">Track Your</span>
                 <br />
                 <GlitchText className="text-primary text-glow">
@@ -66,7 +66,7 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-mono text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed"
+              className="font-mono text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8 leading-relaxed px-2 sm:px-0"
             >
               <span className="text-primary">&gt;</span> Students struggle to maintain a healthy lifestyle while managing academics.{" "}
               <span className="blink-cursor text-primary">We fix that</span>
@@ -93,18 +93,18 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex items-center gap-8 mt-12 justify-center lg:justify-start"
+              className="flex flex-wrap items-center gap-4 sm:gap-8 mt-8 sm:mt-12 justify-center lg:justify-start"
             >
               {[
                 { value: "10K+", label: "Active Users" },
                 { value: "50M", label: "Steps Tracked" },
                 { value: "98%", label: "Satisfaction" },
               ].map((stat, i) => (
-                <div key={i} className="text-center lg:text-left">
-                  <div className="font-display text-2xl md:text-3xl font-bold text-primary text-glow">
+                <div key={i} className="text-center lg:text-left min-w-[80px]">
+                  <div className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-primary text-glow">
                     {stat.value}
                   </div>
-                  <div className="font-terminal text-xs uppercase tracking-widest text-muted-foreground">
+                  <div className="font-terminal text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground">
                     {stat.label}
                   </div>
                 </div>

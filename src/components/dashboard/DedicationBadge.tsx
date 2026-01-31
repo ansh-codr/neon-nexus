@@ -89,17 +89,17 @@ const DedicationBadge = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-5 rounded-lg border backdrop-blur-sm"
+      className="p-4 sm:p-5 rounded-lg border backdrop-blur-sm"
       style={{
         background: config.bgColor,
         borderColor: config.borderColor,
       }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div
-            className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-xl sm:text-2xl"
             style={{
               background: `${config.color}20`,
               border: `2px solid ${config.color}`,
@@ -109,54 +109,54 @@ const DedicationBadge = ({
           </div>
           <div>
             <h3
-              className="font-display text-sm uppercase tracking-wider"
+              className="font-display text-xs sm:text-sm uppercase tracking-wider"
               style={{ color: config.color }}
             >
               {level}
             </h3>
-            <p className="text-xs text-muted-foreground font-mono">
+            <p className="text-[10px] sm:text-xs text-muted-foreground font-mono">
               {config.description}
             </p>
           </div>
         </div>
-        <Icon className="w-6 h-6" style={{ color: config.color }} />
+        <Icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: config.color }} />
       </div>
 
       {/* Streak Stats */}
-      <div className="grid grid-cols-3 gap-3 mb-4">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4">
         <div
-          className="p-3 rounded-lg text-center"
+          className="p-2 sm:p-3 rounded-lg text-center"
           style={{ background: 'rgba(0,0,0,0.2)' }}
         >
-          <p className="text-xs text-muted-foreground font-mono mb-1">Health</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground font-mono mb-0.5 sm:mb-1">Health</p>
           <p
-            className="font-display text-xl font-bold"
+            className="font-display text-lg sm:text-xl font-bold"
             style={{ color: primaryColor }}
           >
             {healthStreak}
-            <span className="text-xs ml-1">days</span>
+            <span className="text-[10px] sm:text-xs ml-0.5 sm:ml-1">days</span>
           </p>
         </div>
         <div
-          className="p-3 rounded-lg text-center"
+          className="p-2 sm:p-3 rounded-lg text-center"
           style={{ background: 'rgba(0,0,0,0.2)' }}
         >
-          <p className="text-xs text-muted-foreground font-mono mb-1">Study</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground font-mono mb-0.5 sm:mb-1">Study</p>
           <p
-            className="font-display text-xl font-bold"
+            className="font-display text-lg sm:text-xl font-bold"
             style={{ color: primaryColor }}
           >
             {studyStreak}
-            <span className="text-xs ml-1">days</span>
+            <span className="text-[10px] sm:text-xs ml-0.5 sm:ml-1">days</span>
           </p>
         </div>
         <div
-          className="p-3 rounded-lg text-center"
+          className="p-2 sm:p-3 rounded-lg text-center"
           style={{ background: 'rgba(0,0,0,0.2)' }}
         >
-          <p className="text-xs text-muted-foreground font-mono mb-1">Score</p>
+          <p className="text-[10px] sm:text-xs text-muted-foreground font-mono mb-0.5 sm:mb-1">Score</p>
           <p
-            className="font-display text-xl font-bold"
+            className="font-display text-lg sm:text-xl font-bold"
             style={{ color: config.color }}
           >
             {combinedScore}

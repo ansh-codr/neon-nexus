@@ -80,7 +80,7 @@ const QuoteOfTheDay = ({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative p-5 rounded-lg border overflow-hidden"
+        className="relative p-4 sm:p-5 rounded-lg border overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${primaryColorRgba} 0.1) 0%, rgba(0,0,0,0.3) 100%)`,
           borderColor: `${primaryColorRgba} 0.3)`,
@@ -88,16 +88,16 @@ const QuoteOfTheDay = ({
       >
         {/* Decorative element */}
         <div
-          className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
+          className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 rounded-full blur-3xl opacity-20"
           style={{ background: primaryColor }}
         />
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-4 relative z-10">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5" style={{ color: primaryColor }} />
+        <div className="flex items-center justify-between mb-3 sm:mb-4 relative z-10">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: primaryColor }} />
             <h3
-              className="font-display text-sm uppercase tracking-wider"
+              className="font-display text-xs sm:text-sm uppercase tracking-wider"
               style={{ color: primaryColor }}
             >
               {examMode ? 'Exam Mode Boost' : 'Daily Motivation'}
@@ -108,10 +108,10 @@ const QuoteOfTheDay = ({
             size="sm"
             onClick={handleRefresh}
             disabled={refreshing || loading}
-            className="h-8 w-8 p-0"
+            className="h-7 w-7 sm:h-8 sm:w-8 p-0"
           >
             <RefreshCw
-              className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`}
+              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${refreshing ? 'animate-spin' : ''}`}
               style={{ color: primaryColor }}
             />
           </Button>
@@ -138,15 +138,15 @@ const QuoteOfTheDay = ({
               exit={{ opacity: 0, y: -10 }}
               className="relative z-10"
             >
-              <blockquote className="text-lg font-mono text-white/90 leading-relaxed">
+              <blockquote className="text-base sm:text-lg font-mono text-white/90 leading-relaxed">
                 "{quote}"
               </blockquote>
-              <div className="mt-3 flex items-center gap-2">
+              <div className="mt-2 sm:mt-3 flex items-center gap-1.5 sm:gap-2">
                 <div
-                  className="w-1 h-4 rounded-full"
+                  className="w-1 h-3 sm:h-4 rounded-full"
                   style={{ background: primaryColor }}
                 />
-                <span className="text-xs text-muted-foreground font-mono">
+                <span className="text-[10px] sm:text-xs text-muted-foreground font-mono">
                   AI-generated • Refreshes daily
                 </span>
               </div>
