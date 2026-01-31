@@ -6,7 +6,7 @@ import {
   useState,
   ReactNode,
 } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
 interface ScrollExpandMediaProps {
   mediaType?: 'video' | 'image';
@@ -36,8 +36,10 @@ const ScrollExpandMedia = ({
   const [mediaFullyExpanded, setMediaFullyExpanded] = useState<boolean>(false);
   const [touchStartY, setTouchStartY] = useState<number>(0);
   const [isMobileState, setIsMobileState] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(false);
 
   const sectionRef = useRef<HTMLDivElement | null>(null);
+  const isInView = useInView(sectionRef, { amount: 0.5 });
 
   useEffect(() => {
     setScrollProgress(0);
@@ -45,10 +47,34 @@ const ScrollExpandMedia = ({
     setMediaFullyExpanded(false);
   }, [mediaType]);
 
+  // Activate scroll hijacking only when section is in view
   useEffect(() => {
+    if (isInView && !mediaFullyExpanded) {
+      setIsActive(true);
+    } else if (mediaFullyExpanded && showContent) {
+      setIsActive(false);
+    }
+  }, [isInView, mediaFullyExpanded, showContent]);
+
+  useEffect(() => {
+    if (!isActive) return;
+
     const handleWheel = (e: WheelEvent) => {
-      if (mediaFullyExpanded && e.deltaY < 0 && window.scrollY <= 5) {
-        setMediaFullyExpanded(false);
+      // Check if section is in viewport
+      const rect = sectionRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      
+      const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inViewport) return;
+
+      if (mediaFullyExpanded && e.deltaY < 0 && scrollProgress >= 1) {
+        // Allow scrolling back up
+        const newProgress = Math.max(scrollProgress - Math.abs(e.deltaY) * 0.0009, 0);
+        if (newProgress < 1) {
+          setMediaFullyExpanded(false);
+          setShowContent(false);
+        }
+        setScrollProgress(newProgress);
         e.preventDefault();
       } else if (!mediaFullyExpanded) {
         e.preventDefault();
@@ -75,13 +101,16 @@ const ScrollExpandMedia = ({
     const handleTouchMove = (e: TouchEvent) => {
       if (!touchStartY) return;
 
+      const rect = sectionRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      
+      const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!inViewport) return;
+
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
 
-      if (mediaFullyExpanded && deltaY < -20 && window.scrollY <= 5) {
-        setMediaFullyExpanded(false);
-        e.preventDefault();
-      } else if (!mediaFullyExpanded) {
+      if (!mediaFullyExpanded) {
         e.preventDefault();
         const scrollFactor = deltaY < 0 ? 0.008 : 0.005;
         const scrollDelta = deltaY * scrollFactor;
@@ -106,26 +135,18 @@ const ScrollExpandMedia = ({
       setTouchStartY(0);
     };
 
-    const handleScroll = (): void => {
-      if (!mediaFullyExpanded) {
-        window.scrollTo(0, 0);
-      }
-    };
-
     window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('scroll', handleScroll);
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [scrollProgress, mediaFullyExpanded, touchStartY]);
+  }, [scrollProgress, mediaFullyExpanded, touchStartY, isActive]);
 
   useEffect(() => {
     const checkIfMobile = (): void => {
