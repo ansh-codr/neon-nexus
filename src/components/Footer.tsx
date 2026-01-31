@@ -1,22 +1,22 @@
 import { Activity, Github, Twitter, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const footerLinks = {
   product: [
-    { label: "Features", href: "#features" },
-    { label: "How It Works", href: "#how-it-works" },
-    { label: "Pricing", href: "#" },
-    { label: "FAQ", href: "#" },
+    { label: "Features", href: "#features", isRoute: false },
+    { label: "How It Works", href: "#how-it-works", isRoute: false },
+    { label: "Dashboard", href: "/dashboard", isRoute: true },
+    { label: "Arcade", href: "/games", isRoute: true },
   ],
   resources: [
-    { label: "Documentation", href: "#" },
-    { label: "API Reference", href: "#" },
-    { label: "Blog", href: "#" },
-    { label: "Support", href: "#" },
+    { label: "Demo", href: "/demo", isRoute: true },
+    { label: "Connect Google Fit", href: "/connect-fit", isRoute: true },
+    { label: "Login", href: "/login", isRoute: true },
+    { label: "Sign Up", href: "/signup", isRoute: true },
   ],
   legal: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Cookie Policy", href: "#" },
+    { label: "Privacy Policy", href: "/privacy", isRoute: true },
+    { label: "Terms of Service", href: "/terms", isRoute: true },
   ],
 };
 
@@ -38,7 +38,7 @@ export const Footer = () => {
               </span>
             </div>
             <p className="font-mono text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 leading-relaxed">
-              Campus Health Tracker — helping students maintain healthy lifestyles while managing academics.
+              Neon Nexus — Campus Health Tracker helping students maintain healthy lifestyles while managing academics.
             </p>
             {/* Social Links */}
             <div className="flex gap-3 sm:gap-4">
@@ -63,12 +63,21 @@ export const Footer = () => {
               <ul className="space-y-2 sm:space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="font-mono text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {link.label}
-                    </a>
+                    {link.isRoute ? (
+                      <Link
+                        to={link.href}
+                        className="font-mono text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="font-mono text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
