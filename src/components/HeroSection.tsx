@@ -1,10 +1,27 @@
 import { motion } from "framer-motion";
 import { Activity, ArrowRight, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import CyberButton from "./CyberButton";
 import GlitchText from "./GlitchText";
 import CyberCard from "./CyberCard";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const HeroSection = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleStartTracking = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/signup');
+    }
+  };
+
+  const handleLearnMore = () => {
+    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
       {/* Background Effects */}
@@ -62,11 +79,11 @@ export const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
-              <CyberButton variant="glitch" size="lg">
-                Start Tracking
+              <CyberButton variant="glitch" size="lg" onClick={handleStartTracking}>
+                {user ? 'Go to Dashboard' : 'Start Tracking'}
                 <ArrowRight className="inline-block ml-2 h-5 w-5" />
               </CyberButton>
-              <CyberButton variant="outline" size="lg">
+              <CyberButton variant="outline" size="lg" onClick={handleLearnMore}>
                 Learn More
               </CyberButton>
             </motion.div>

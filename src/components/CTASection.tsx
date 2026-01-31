@@ -1,9 +1,26 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import CyberButton from "./CyberButton";
 import GlitchText from "./GlitchText";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const CTASection = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleGetStarted = () => {
+    if (user) {
+      navigate('/dashboard');
+    } else {
+      navigate('/signup');
+    }
+  };
+
+  const handleViewDemo = () => {
+    navigate('/demo');
+  };
+
   return (
     <section className="relative py-24 lg:py-32 overflow-hidden">
       {/* Background */}
@@ -39,11 +56,11 @@ export const CTASection = () => {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <CyberButton variant="glitch" size="lg">
-              Get Started Now
+            <CyberButton variant="glitch" size="lg" onClick={handleGetStarted}>
+              {user ? 'Go to Dashboard' : 'Get Started Now'}
               <ArrowRight className="inline-block ml-2 h-5 w-5" />
             </CyberButton>
-            <CyberButton variant="secondary" size="lg">
+            <CyberButton variant="secondary" size="lg" onClick={handleViewDemo}>
               View Demo
             </CyberButton>
           </div>
