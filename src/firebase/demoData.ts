@@ -53,18 +53,21 @@ export const DEMO_COMPETITIVE_FEED = [
     message: '12 students logged progress today',
     count: 12,
     date: new Date().toISOString().split('T')[0],
+    createdAt: new Date(),
   },
   {
     type: 'top_streak' as const,
     message: 'Top consistency streak this week: 9 days',
     count: 9,
     date: new Date().toISOString().split('T')[0],
+    createdAt: new Date(),
   },
   {
     type: 'milestone' as const,
     message: '3 students hit a milestone this week!',
     count: 3,
     date: new Date().toISOString().split('T')[0],
+    createdAt: new Date(),
   },
 ];
 

@@ -233,7 +233,7 @@ export const subscribeToHealthData = (
   return onSnapshot(
     q,
     (querySnapshot) => {
-      const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as HealthDataDoc));
+      const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as unknown as HealthDataDoc);
       callback(data);
     },
     (error) => {

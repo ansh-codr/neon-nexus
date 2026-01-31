@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
-import { onAuthChange, logOut, getUserProfile, saveUserProfile } from '../firebase';
+import { onAuthChange, logOut, getUserProfile, saveUserProfile, signUpWithEmail, signInWithEmail } from '../firebase';
 import type { UserProfile } from '../firebase';
 
 interface AuthContextType {
@@ -9,6 +9,8 @@ interface AuthContextType {
   loading: boolean;
   error: string | null;
   logout: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, displayName?: string) => Promise<void>;
   updateProfile: (data: Partial<UserProfile>) => Promise<void>;
   setExamMode: (enabled: boolean) => Promise<void>;
 }
@@ -97,12 +99,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await updateProfile({ examMode: enabled });
   };
 
+  const login = async (email: string, password: string) => {
+    try {
+      await signInWithEmail(email, password);
+    } catch (err) {
+      console.error('Login error:', err);
+      throw err;
+    }
+  };
+
+  const signup = async (email: string, password: string, displayName?: string) => {
+    try {
+      await signUpWithEmail(email, password, displayName);
+    } catch (err) {
+      console.error('Signup error:', err);
+      throw err;
+    }
+  };
+
   const value = {
     user,
     userProfile,
     loading,
     error,
     logout,
+    login,
+    signup,
     updateProfile,
     setExamMode,
   };

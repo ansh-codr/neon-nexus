@@ -36,18 +36,18 @@ export interface UseStreakReturn {
   } | null;
 }
 
-// Default streak for new users
-const DEFAULT_STREAK: UserStreakRecord = {
+// Default streak for new users (using any for demo compatibility)
+const DEFAULT_STREAK = {
   ...DEMO_STREAK_DATA,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString(),
-};
+  createdAt: new Date(),
+  updatedAt: new Date(),
+} as any;
 
 export const useStreak = (): UseStreakReturn => {
   const { user, userProfile } = useAuth();
   const [streak, setStreak] = useState<UserStreakRecord | null>(null);
   const [publicLeaderboard, setPublicLeaderboard] = useState<PublicUserSnapshot[]>(DEMO_PUBLIC_LEADERBOARD);
-  const [competitiveFeed, setCompetitiveFeed] = useState<CompetitiveFeedItem[]>(DEMO_COMPETITIVE_FEED);
+  const [competitiveFeed, setCompetitiveFeed] = useState<CompetitiveFeedItem[]>(DEMO_COMPETITIVE_FEED as any);
   const [loading, setLoading] = useState(true);
   const [isAtRisk, setIsAtRisk] = useState(false);
   const [aggregateStats, setAggregateStats] = useState<{
@@ -147,7 +147,7 @@ export const useStreak = (): UseStreakReturn => {
     
     timeoutId = setTimeout(() => {
       if (competitiveFeed.length === 0) {
-        setCompetitiveFeed(DEMO_COMPETITIVE_FEED);
+        setCompetitiveFeed(DEMO_COMPETITIVE_FEED as any);
       }
     }, 3000);
 
@@ -156,7 +156,7 @@ export const useStreak = (): UseStreakReturn => {
       if (data.length > 0) {
         setCompetitiveFeed(data);
       } else {
-        setCompetitiveFeed(DEMO_COMPETITIVE_FEED);
+        setCompetitiveFeed(DEMO_COMPETITIVE_FEED as any);
       }
     });
 

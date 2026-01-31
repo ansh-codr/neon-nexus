@@ -181,7 +181,7 @@ const StudyLogModal = ({ isOpen, onClose, onSave, examMode = false }: StudyLogMo
                           focusLevel === level.value
                             ? primaryColor
                             : 'rgba(255,255,255,0.1)',
-                        ringColor: primaryColor,
+                        boxShadow: focusLevel === level.value ? `0 0 0 2px ${primaryColor}` : 'none',
                       }}
                     >
                       <span className="text-xl block mb-1">{level.emoji}</span>
@@ -214,7 +214,7 @@ const StudyLogModal = ({ isOpen, onClose, onSave, examMode = false }: StudyLogMo
                           productivity === level.value
                             ? primaryColor
                             : 'rgba(255,255,255,0.1)',
-                        ringColor: primaryColor,
+                        boxShadow: productivity === level.value ? `0 0 0 2px ${primaryColor}` : 'none',
                       }}
                     >
                       <span className="text-xl block mb-1">{level.emoji}</span>

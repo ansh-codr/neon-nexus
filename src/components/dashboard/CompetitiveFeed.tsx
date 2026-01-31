@@ -138,12 +138,10 @@ const CompetitiveFeed = ({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 + index * 0.05 }}
-                    className={`flex items-center gap-3 p-2 rounded-lg transition-all ${
-                      isCurrentUser ? 'ring-1' : ''
-                    }`}
+                    className={`flex items-center gap-3 p-2 rounded-lg transition-all`}
                     style={{
                       background: isCurrentUser ? `${primaryColorRgba} 0.1)` : 'transparent',
-                      ringColor: isCurrentUser ? primaryColor : 'transparent',
+                      boxShadow: isCurrentUser ? `inset 0 0 0 1px ${primaryColor}` : 'none',
                     }}
                   >
                     {/* Rank */}

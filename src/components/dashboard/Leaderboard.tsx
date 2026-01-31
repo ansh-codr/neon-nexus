@@ -93,7 +93,7 @@ const Leaderboard = ({ users, examMode = false, currentUserId }: LeaderboardProp
                     ? "rgba(156, 163, 175, 0.3)"
                     : "rgba(217, 119, 6, 0.3)"
                   : `${primaryColorRgba} 0.2)`,
-              ringColor: currentUserId === user.id ? primaryColor : "transparent",
+              boxShadow: currentUserId === user.id ? `0 0 0 2px ${primaryColor}` : "none",
             }}
           >
             <div className="flex items-center gap-3">
