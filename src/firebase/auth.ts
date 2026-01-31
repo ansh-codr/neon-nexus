@@ -6,6 +6,7 @@ import {
   updateProfile,
   GoogleAuthProvider,
   GithubAuthProvider,
+  OAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
   User,
@@ -16,6 +17,7 @@ import { auth } from './firebase';
 // Auth Providers
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
+const microsoftProvider = new OAuthProvider('microsoft.com');
 
 // Sign up with email and password
 export const signUpWithEmail = async (
@@ -49,6 +51,11 @@ export const signInWithGoogle = async (): Promise<UserCredential> => {
 // Sign in with GitHub
 export const signInWithGithub = async (): Promise<UserCredential> => {
   return signInWithPopup(auth, githubProvider);
+};
+
+// Sign in with Microsoft
+export const signInWithMicrosoft = async (): Promise<UserCredential> => {
+  return signInWithPopup(auth, microsoftProvider);
 };
 
 // Sign out

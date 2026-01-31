@@ -7,6 +7,7 @@ export {
   signInWithEmail,
   signInWithGoogle,
   signInWithGithub,
+  signInWithMicrosoft,
   logOut,
   resetPassword,
   updateUserProfile,
