@@ -9,11 +9,15 @@ import WeeklyTrends from "@/components/dashboard/WeeklyTrends";
 import SmartSuggestions from "@/components/dashboard/SmartSuggestions";
 import ExamModeToggle from "@/components/dashboard/ExamModeToggle";
 import HealthInputModal, { AddHealthDataButton } from "@/components/dashboard/HealthInputModal";
-import Leaderboard, { LeaderboardUser } from "@/components/dashboard/Leaderboard";
+import DedicationBadge from "@/components/dashboard/DedicationBadge";
+import CompetitiveFeed from "@/components/dashboard/CompetitiveFeed";
+import QuoteOfTheDay from "@/components/dashboard/QuoteOfTheDay";
+import StudyLogModal from "@/components/dashboard/StudyLogModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { useHealthData } from "@/hooks/useHealthData";
-import { subscribeToLeaderboard, LeaderboardEntry } from "@/firebase";
-import { User, Calendar, Loader2, LogIn } from "lucide-react";
+import { useStreak } from "@/hooks/useStreak";
+import { generateDedicationInsight, generateCompetitiveInsight } from "@/firebase";
+import { User, Calendar, Loader2, LogIn, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
@@ -30,26 +34,34 @@ const Dashboard = () => {
     isAuthenticated 
   } = useHealthData();
 
+  const {
+    streak,
+    publicLeaderboard,
+    competitiveFeed,
+    loading: streakLoading,
+    isAtRisk,
+    logHealthActivity,
+    logStudyActivity,
+  } = useStreak();
+
   const [showInputModal, setShowInputModal] = useState(false);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
+  const [showStudyModal, setShowStudyModal] = useState(false);
+  const [dedicationInsight, setDedicationInsight] = useState<string>('');
+  const [competitiveInsight, setCompetitiveInsight] = useState<string>('');
   const examMode = userProfile?.examMode || false;
 
-  // Subscribe to leaderboard
+  // Load AI insights
   useEffect(() => {
-    const unsubscribe = subscribeToLeaderboard((entries: LeaderboardEntry[]) => {
-      const leaderboardUsers: LeaderboardUser[] = entries.map((entry, index) => ({
-        id: entry.userId,
-        name: entry.name,
-        score: Math.round(entry.avgScore),
-        rank: index + 1,
-        avatar: entry.avatar,
-        streak: entry.dataCount,
-      }));
-      setLeaderboard(leaderboardUsers);
-    });
+    if (streak) {
+      generateDedicationInsight(
+        streak.healthStreak,
+        streak.studyStreak,
+        streak.dedicationLevel
+      ).then(setDedicationInsight);
+    }
 
-    return () => unsubscribe();
-  }, []);
+    generateCompetitiveInsight().then(setCompetitiveInsight);
+  }, [streak]);
 
   // Get today's date
   const today = new Date().toLocaleDateString('en-US', {
@@ -79,6 +91,19 @@ const Dashboard = () => {
     stressLevel: 'low' | 'medium' | 'high';
   }) => {
     await saveToday(data);
+    // Update health streak
+    await logHealthActivity();
+  };
+
+  // Handle save study data
+  const handleSaveStudy = async (data: {
+    studyHours: number;
+    focusLevel: 'low' | 'medium' | 'high';
+    productivity: 'low' | 'medium' | 'high';
+    subjects: string[];
+  }) => {
+    // Log study activity for streak
+    await logStudyActivity();
   };
 
   // Show loading state
@@ -281,10 +306,58 @@ const Dashboard = () => {
 
               {/* Exam Mode Toggle */}
               <ExamModeToggle enabled={examMode} onToggle={handleExamModeToggle} />
+
+              {/* Dedication Badge */}
+              {streak && (
+                <DedicationBadge
+                  level={streak.dedicationLevel}
+                  healthStreak={streak.healthStreak}
+                  studyStreak={streak.studyStreak}
+                  combinedScore={streak.combinedScore}
+                  insight={dedicationInsight}
+                  examMode={examMode}
+                />
+              )}
+
+              {/* Quote of the Day */}
+              <QuoteOfTheDay
+                examMode={examMode}
+                stressLevel={todayData?.stressLevel || 'medium'}
+                isAtRisk={isAtRisk}
+                currentStreak={streak ? Math.max(streak.healthStreak, streak.studyStreak) : 0}
+              />
             </div>
 
             {/* Middle Column - Health Metrics */}
             <div className="lg:col-span-1 space-y-6">
+              {/* Log Buttons */}
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => setShowInputModal(true)}
+                  className="flex-1 font-mono text-xs"
+                  style={{
+                    background: examMode ? "rgba(168, 85, 247, 0.2)" : "rgba(0, 255, 157, 0.2)",
+                    border: `1px solid ${examMode ? "#a855f7" : "#00ff9d"}`,
+                    color: examMode ? "#a855f7" : "#00ff9d",
+                  }}
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  Log Health
+                </Button>
+                <Button
+                  onClick={() => setShowStudyModal(true)}
+                  className="flex-1 font-mono text-xs"
+                  style={{
+                    background: "rgba(59, 130, 246, 0.2)",
+                    border: "1px solid #3b82f6",
+                    color: "#3b82f6",
+                  }}
+                >
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Log Study
+                </Button>
+              </div>
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -340,7 +413,7 @@ const Dashboard = () => {
               />
             </div>
 
-            {/* Right Column - Weekly Trends & Leaderboard */}
+            {/* Right Column - Weekly Trends & Competitive Feed */}
             <div className="lg:col-span-1 space-y-6">
               <WeeklyTrends 
                 data={weeklyData} 
@@ -348,14 +421,14 @@ const Dashboard = () => {
                 summary={weeklySummary || "Start tracking to see your weekly trends!"} 
               />
               
-              {/* Leaderboard */}
-              {leaderboard.length > 0 && (
-                <Leaderboard 
-                  users={leaderboard} 
-                  examMode={examMode}
-                  currentUserId={user?.uid}
-                />
-              )}
+              {/* Competitive Feed */}
+              <CompetitiveFeed
+                feedItems={competitiveFeed}
+                leaderboard={publicLeaderboard}
+                competitiveInsight={competitiveInsight}
+                currentUserId={user?.uid}
+                examMode={examMode}
+              />
             </div>
           </div>
         )}
@@ -383,6 +456,14 @@ const Dashboard = () => {
         onSave={handleSaveHealth}
         examMode={examMode}
         initialData={todayData || undefined}
+      />
+
+      {/* Study Log Modal */}
+      <StudyLogModal
+        isOpen={showStudyModal}
+        onClose={() => setShowStudyModal(false)}
+        onSave={handleSaveStudy}
+        examMode={examMode}
       />
     </div>
   );

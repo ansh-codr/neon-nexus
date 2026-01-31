@@ -52,12 +52,62 @@ export {
   initializeMockData,
 } from './admin';
 
+// Streak exports
+export {
+  STREAK_COLLECTIONS,
+  getOrCreateUserStreak,
+  updateHealthStreak,
+  updateStudyStreak,
+  getPublicSnapshots,
+  subscribeToUserStreak,
+  subscribeToPublicLeaderboard,
+  getCompetitiveFeed,
+  subscribeToCompetitiveFeed,
+  isStreakAtRisk,
+  getAggregateStats,
+  calculateDedicationLevel,
+  calculateBalanceScore,
+  getBadge,
+} from './streaks';
+
+// AI Service exports
+export {
+  generateDedicationInsight,
+  generateCompetitiveInsight,
+  generateComparisonInsight,
+  generateQuoteOfTheDay,
+  generateStreakRiskMessage,
+  generateDashboardInsights,
+  PROMPT_TEMPLATES,
+} from './aiService';
+
 // Type exports
 export type {
   UserProfile,
   HealthDataDoc,
   WeeklyTrendDoc,
 } from './firestore';
+
+export type {
+  MockUser,
+  MockHealthData,
+  LeaderboardEntry,
+} from './admin';
+
+export type {
+  UserStreakRecord,
+  PublicUserSnapshot,
+  DailySummary,
+  CompetitiveFeedItem,
+  DailyQuote,
+  DedicationLevel,
+} from './streaks';
+
+export type {
+  CachedQuote,
+  AIInsight,
+  DashboardInsights,
+} from './aiService';
 
 export type {
   MockUser,
