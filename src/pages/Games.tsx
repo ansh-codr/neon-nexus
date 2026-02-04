@@ -3,7 +3,20 @@ import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Component as EtherealShadow } from "@/components/ui/etheral-shadow";
 import GlitchText from "@/components/GlitchText";
-import { Gamepad2, Grid3X3, Brain, Hand, Zap, Trophy, Timer, Target } from "lucide-react";
+import {
+  Gamepad2,
+  Grid3X3,
+  Brain,
+  Hand,
+  Zap,
+  Trophy,
+  Timer,
+  Target,
+  Hash,
+  Calculator,
+  Palette,
+  Crosshair,
+} from "lucide-react";
 
 const games = [
   {
@@ -18,16 +31,16 @@ const games = [
   {
     id: "memory-flip",
     title: "Memory Flip",
-    description: "Test your memory. Match the neon cards before time runs out.",
+    description: "Match neon pairs and sharpen short-term recall.",
     icon: Brain,
     color: "#ff00ff",
-    difficulty: "Medium",
+    difficulty: "Easy",
     players: "1",
   },
   {
     id: "rock-paper-scissors",
     title: "Rock Paper Scissors",
-    description: "The ultimate showdown. Best of 5 against the neural network.",
+    description: "Best of five vs the neural network.",
     icon: Hand,
     color: "#00ffff",
     difficulty: "Easy",
@@ -36,7 +49,7 @@ const games = [
   {
     id: "reaction-time",
     title: "Reaction Test",
-    description: "How fast are your reflexes? Test your neural response time.",
+    description: "Tap fast to measure neural response time.",
     icon: Zap,
     color: "#f59e0b",
     difficulty: "Easy",
@@ -45,19 +58,55 @@ const games = [
   {
     id: "snake",
     title: "Cyber Snake",
-    description: "Navigate the grid. Collect data packets. Don't crash!",
+    description: "Collect data packets without crashing.",
     icon: Target,
     color: "#10b981",
-    difficulty: "Hard",
+    difficulty: "Easy",
     players: "1",
   },
   {
     id: "simon-says",
     title: "Simon Says",
-    description: "Follow the pattern. How long can you remember the sequence?",
+    description: "Follow the pattern and extend the sequence.",
     icon: Timer,
     color: "#ec4899",
-    difficulty: "Medium",
+    difficulty: "Easy",
+    players: "1",
+  },
+  {
+    id: "number-guess",
+    title: "Number Guess",
+    description: "Crack the secret number with smart hints.",
+    icon: Hash,
+    color: "#22d3ee",
+    difficulty: "Easy",
+    players: "1",
+  },
+  {
+    id: "quick-math",
+    title: "Quick Math",
+    description: "Solve 10 lightning questions and score high.",
+    icon: Calculator,
+    color: "#38bdf8",
+    difficulty: "Easy",
+    players: "1",
+  },
+  {
+    id: "color-match",
+    title: "Color Match",
+    description: "Tap the button that matches the text color.",
+    icon: Palette,
+    color: "#a855f7",
+    difficulty: "Easy",
+    players: "1",
+  },
+  {
+    id: "reflex-tap",
+    title: "Reflex Tap",
+    description: "Hit the glowing target before it jumps.",
+    icon: Crosshair,
+    color: "#34d399",
+    difficulty: "Easy",
     players: "1",
   },
 ];
@@ -184,7 +233,7 @@ const Games = () => {
                   />
 
                   {/* Content */}
-                  <div className="relative z-10">
+                  <div className="relative z-10 text-left">
                     {/* Icon */}
                     <div
                       className="w-14 h-14 rounded-lg flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
@@ -206,7 +255,7 @@ const Games = () => {
                     </h3>
 
                     {/* Description */}
-                    <p className="font-mono text-sm text-muted-foreground mb-4 leading-relaxed">
+                    <p className="font-mono text-sm text-muted-foreground mb-4 leading-snug">
                       {game.description}
                     </p>
 
@@ -228,7 +277,7 @@ const Games = () => {
                           color: "rgba(255,255,255,0.7)",
                         }}
                       >
-                        {game.players} Player
+                        {game.players} {game.players === "1" ? "Player" : "Players"}
                       </span>
                     </div>
 

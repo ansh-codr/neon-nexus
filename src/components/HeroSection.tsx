@@ -41,8 +41,8 @@ export const HeroSection = () => {
               className="inline-flex items-center gap-2 px-4 py-2 border border-primary/50 cyber-chamfer-sm mb-8"
             >
               <Zap className="h-4 w-4 text-primary" />
-              <span className="font-terminal text-xs uppercase tracking-widest text-primary">
-                PS-98 // Campus Health Tracker
+              <span className="font-modern-body text-xs uppercase tracking-[0.25em] text-primary">
+                Neural Wellness OS // Student Edition
               </span>
             </motion.div>
 
@@ -52,11 +52,11 @@ export const HeroSection = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-wider mb-4 sm:mb-6">
-                <span className="text-foreground">Track Your</span>
+              <h1 className="font-modern text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold uppercase tracking-wide mb-4 sm:mb-6">
+                <span className="text-foreground">Design Your</span>
                 <br />
                 <GlitchText className="text-primary text-glow">
-                  Health
+                  Rhythm
                 </GlitchText>
               </h1>
             </motion.div>
@@ -66,10 +66,10 @@ export const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="font-mono text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8 leading-relaxed px-2 sm:px-0"
+              className="font-modern-body text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 sm:mb-8 leading-relaxed px-2 sm:px-0"
             >
-              <span className="text-primary">&gt;</span> Students struggle to maintain a healthy lifestyle while managing academics.{" "}
-              <span className="blink-cursor text-primary">We fix that</span>
+              <span className="text-primary">&gt;</span> A calm, modern dashboard that turns daily signals
+              into clear, actionable habits. Sync, reflect, and improve.
             </motion.p>
 
             {/* CTAs */}
@@ -80,11 +80,11 @@ export const HeroSection = () => {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <CyberButton variant="glitch" size="lg" onClick={handleStartTracking}>
-                {user ? 'Go to Dashboard' : 'Start Tracking'}
+                {user ? 'Open Dashboard' : 'Start Now'}
                 <ArrowRight className="inline-block ml-2 h-5 w-5" />
               </CyberButton>
               <CyberButton variant="outline" size="lg" onClick={handleLearnMore}>
-                Learn More
+                Explore Features
               </CyberButton>
             </motion.div>
 
@@ -96,15 +96,15 @@ export const HeroSection = () => {
               className="flex flex-wrap items-center gap-4 sm:gap-8 mt-8 sm:mt-12 justify-center lg:justify-start"
             >
               {[
-                { value: "10K+", label: "Active Users" },
-                { value: "50M", label: "Steps Tracked" },
-                { value: "98%", label: "Satisfaction" },
+                { value: "12K+", label: "Active Members" },
+                { value: "7", label: "Signal Types" },
+                { value: "4.9", label: "App Rating" },
               ].map((stat, i) => (
                 <div key={i} className="text-center lg:text-left min-w-[80px]">
-                  <div className="font-display text-xl sm:text-2xl md:text-3xl font-bold text-primary text-glow">
+                  <div className="font-modern text-xl sm:text-2xl md:text-3xl font-semibold text-primary text-glow">
                     {stat.value}
                   </div>
-                  <div className="font-terminal text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground">
+                  <div className="font-modern-body text-[10px] sm:text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     {stat.label}
                   </div>
                 </div>

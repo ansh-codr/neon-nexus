@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 
 const stats = [
-  { value: "10,000+", label: "Active Users", prefix: ">" },
-  { value: "50M", label: "Steps Tracked", prefix: "$" },
-  { value: "1.2M", label: "Hours of Sleep", prefix: "#" },
-  { value: "98%", label: "User Satisfaction", prefix: "!" },
+  { value: "12,000+", label: "Active Members", prefix: ">" },
+  { value: "87%", label: "Weekly Streaks", prefix: "$" },
+  { value: "4.9/5", label: "App Rating", prefix: "#" },
+  { value: "7", label: "Signal Types", prefix: "!" },
 ];
 
 export const StatsSection = () => {
@@ -23,13 +23,13 @@ export const StatsSection = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center px-2 sm:px-4 lg:px-8"
             >
-              <div className="font-terminal text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">
+              <div className="font-modern-body text-[10px] sm:text-xs text-muted-foreground mb-1 sm:mb-2">
                 <span className="text-primary">{stat.prefix}</span> stat_{index + 1}
               </div>
-              <div className="font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary text-glow mb-1 sm:mb-2">
+              <div className="font-modern text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-primary text-glow mb-1 sm:mb-2">
                 {stat.value}
               </div>
-              <div className="font-terminal text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground">
+              <div className="font-modern-body text-[10px] sm:text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 {stat.label}
               </div>
             </motion.div>

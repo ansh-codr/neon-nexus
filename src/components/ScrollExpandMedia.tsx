@@ -221,7 +221,7 @@ const ScrollExpandMedia = ({
                               '?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1&playlist=' +
                               mediaSrc.split('v=')[1]
                         }
-                        className="w-full h-full"
+                        className="w-full h-full opacity-70"
                         style={{
                           clipPath: `polygon(
                             0 16px, 16px 0,
@@ -252,7 +252,7 @@ const ScrollExpandMedia = ({
                         loop
                         playsInline
                         preload="auto"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover opacity-70"
                         style={{
                           clipPath: `polygon(
                             0 16px, 16px 0,

@@ -21,6 +21,10 @@ import RockPaperScissors from "./pages/games/RockPaperScissors";
 import ReactionTime from "./pages/games/ReactionTime";
 import Snake from "./pages/games/Snake";
 import SimonSays from "./pages/games/SimonSays";
+import NumberGuess from "./pages/games/NumberGuess";
+import QuickMath from "./pages/games/QuickMath";
+import ColorMatch from "./pages/games/ColorMatch";
+import ReflexTap from "./pages/games/ReflexTap";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,6 +60,10 @@ const App = () => (
             <Route path="/games/reaction-time" element={<ProtectedRoute><ReactionTime /></ProtectedRoute>} />
             <Route path="/games/snake" element={<ProtectedRoute><Snake /></ProtectedRoute>} />
             <Route path="/games/simon-says" element={<ProtectedRoute><SimonSays /></ProtectedRoute>} />
+            <Route path="/games/number-guess" element={<ProtectedRoute><NumberGuess /></ProtectedRoute>} />
+            <Route path="/games/quick-math" element={<ProtectedRoute><QuickMath /></ProtectedRoute>} />
+            <Route path="/games/color-match" element={<ProtectedRoute><ColorMatch /></ProtectedRoute>} />
+            <Route path="/games/reflex-tap" element={<ProtectedRoute><ReflexTap /></ProtectedRoute>} />
             
             {/* Catch-all */}
             <Route path="*" element={<NotFound />} />

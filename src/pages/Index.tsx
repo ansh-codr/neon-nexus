@@ -5,7 +5,6 @@ import FeaturesSection from "@/components/FeaturesSection";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import StatsSection from "@/components/StatsSection";
 import CTASection from "@/components/CTASection";
-import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -22,7 +21,6 @@ const Index = () => {
         <StatsSection />
         <CTASection />
       </main>
-      <Footer />
     </div>
   );
 };

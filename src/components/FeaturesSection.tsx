@@ -6,38 +6,38 @@ import GlitchText from "./GlitchText";
 const features = [
   {
     icon: Moon,
-    title: "Sleep Tracking",
-    description: "Monitor your sleep patterns, REM cycles, and wake times. Get insights to improve your rest quality.",
+    title: "Sleep Clarity",
+    description: "Understand sleep stages and recovery with calm, readable insights.",
     color: "neon-cyan",
   },
   {
     icon: Footprints,
-    title: "Step Counter",
-    description: "Track every step you take. Set daily goals and watch your progress in real-time.",
+    title: "Daily Motion",
+    description: "Track steps, streaks, and light movement goals without the clutter.",
     color: "neon-green",
   },
   {
     icon: Dumbbell,
-    title: "Exercise Log",
-    description: "Log workouts, track reps, and measure your fitness journey with detailed analytics.",
+    title: "Training Log",
+    description: "Capture workouts and see progress snapshots that are easy to scan.",
     color: "neon-magenta",
   },
   {
     icon: Bell,
-    title: "Smart Reminders",
-    description: "Get personalized notifications for hydration, movement breaks, and sleep schedules.",
+    title: "Gentle Nudges",
+    description: "Personal reminders for hydration, breaks, and wind-down routines.",
     color: "neon-green",
   },
   {
     icon: Brain,
-    title: "AI Suggestions",
-    description: "Receive AI-powered recommendations based on your unique health patterns.",
+    title: "Focus Assist",
+    description: "Adaptive suggestions that match your energy and workload patterns.",
     color: "neon-cyan",
   },
   {
     icon: TrendingUp,
-    title: "Trend Analysis",
-    description: "Visualize your health trends over time. Identify patterns and optimize your lifestyle.",
+    title: "Trend Signals",
+    description: "Spot patterns across weeks and find the habits that move the needle.",
     color: "neon-magenta",
   },
 ];
@@ -73,15 +73,15 @@ export const FeaturesSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-10 sm:mb-16"
         >
-          <span className="font-terminal text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-primary mb-4 block">
-            &gt; System.features()
+          <span className="font-modern-body text-xs uppercase tracking-[0.3em] text-primary mb-4 block">
+            &gt; Experience.core
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-4 sm:mb-6">
-            <GlitchText className="text-foreground">Core</GlitchText>{" "}
-            <span className="text-primary text-glow">Modules</span>
+          <h2 className="font-modern text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold uppercase tracking-wide mb-4 sm:mb-6">
+            <GlitchText className="text-foreground">Built for</GlitchText>{" "}
+            <span className="text-primary text-glow">Momentum</span>
           </h2>
-          <p className="font-mono text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
-            Comprehensive health tracking features designed for the modern student lifestyle.
+          <p className="font-modern-body text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
+            A modern suite that blends health, focus, and recovery into a single clean flow.
           </p>
         </motion.div>
 
@@ -115,17 +115,17 @@ export const FeaturesSection = () => {
                   </div>
 
                   {/* Content */}
-                  <h3 className="font-display text-xl uppercase tracking-wide text-foreground mb-3">
+                  <h3 className="font-modern text-xl uppercase tracking-wide text-foreground mb-3">
                     {feature.title}
                   </h3>
-                  <p className="font-mono text-sm text-muted-foreground leading-relaxed">
+                  <p className="font-modern-body text-sm text-muted-foreground leading-relaxed">
                     {feature.description}
                   </p>
 
                   {/* Terminal Line */}
                   <div className="mt-4 pt-4 border-t border-border">
-                    <span className="font-terminal text-xs text-primary">
-                      <span className="text-muted-foreground">$</span> module.init()
+                    <span className="font-modern-body text-xs text-primary">
+                      <span className="text-muted-foreground">$</span> launch.module()
                       <span className="blink-cursor" />
                     </span>
                   </div>

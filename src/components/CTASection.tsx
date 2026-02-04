@@ -41,32 +41,32 @@ export const CTASection = () => {
           </div>
 
           {/* Headline */}
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-4 sm:mb-6">
-            <span className="text-foreground">Ready to</span>
+          <h2 className="font-modern text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold uppercase tracking-wide mb-4 sm:mb-6">
+            <span className="text-foreground">Ready for</span>
             <br />
-            <GlitchText className="text-primary text-glow">Upgrade</GlitchText>{" "}
-            <span className="text-foreground">Your Health?</span>
+            <GlitchText className="text-primary text-glow">Modern</GlitchText>{" "}
+            <span className="text-foreground">Wellness?</span>
           </h2>
 
           {/* Description */}
-          <p className="font-mono text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
-            <span className="text-primary">&gt;</span> Join thousands of students who have transformed their 
-            health habits. Start tracking today and unlock your full potential.
+          <p className="font-modern-body text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-2">
+            <span className="text-primary">&gt;</span> A clean start, a calm routine, and a dashboard that
+            keeps you in control.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <CyberButton variant="glitch" size="lg" onClick={handleGetStarted}>
-              {user ? 'Go to Dashboard' : 'Get Started Now'}
+              {user ? 'Open Dashboard' : 'Get Started'}
               <ArrowRight className="inline-block ml-2 h-5 w-5" />
             </CyberButton>
             <CyberButton variant="secondary" size="lg" onClick={handleViewDemo}>
-              View Demo
+              See the Flow
             </CyberButton>
           </div>
 
           {/* Terminal Note */}
-          <div className="mt-12 font-terminal text-sm text-muted-foreground">
+          <div className="mt-12 font-modern-body text-sm text-muted-foreground">
             <span className="text-primary">$</span> No credit card required.{" "}
             <span className="text-primary">Free</span> for students.
             <span className="blink-cursor" />

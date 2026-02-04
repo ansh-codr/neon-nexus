@@ -6,26 +6,26 @@ const steps = [
   {
     number: "01",
     icon: Download,
-    title: "Download App",
-    description: "Get the Campus Health Tracker from your app store. Quick setup, zero hassle.",
+    title: "Connect",
+    description: "Link your health data in seconds with secure Google Fit sync.",
   },
   {
     number: "02",
     icon: UserCheck,
-    title: "Create Profile",
-    description: "Set up your health profile with your goals, preferences, and academic schedule.",
+    title: "Personalize",
+    description: "Set focus hours, goals, and the signals you care about most.",
   },
   {
     number: "03",
     icon: Activity,
-    title: "Start Tracking",
-    description: "Begin monitoring sleep, steps, and exercise. The app syncs automatically.",
+    title: "Track",
+    description: "Watch sleep, steps, and workouts update in near real time.",
   },
   {
     number: "04",
     icon: Sparkles,
-    title: "Get Insights",
-    description: "Receive personalized suggestions and watch your health trends improve.",
+    title: "Reflect",
+    description: "Review clean insights and keep the habits that work.",
   },
 ];
 
@@ -47,15 +47,15 @@ export const HowItWorksSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-10 sm:mb-16"
         >
-          <span className="font-terminal text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-secondary mb-4 block">
-            &gt; System.initialize()
+          <span className="font-modern-body text-xs uppercase tracking-[0.3em] text-secondary mb-4 block">
+            &gt; Getting.started
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-wide mb-4 sm:mb-6">
+          <h2 className="font-modern text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold uppercase tracking-wide mb-4 sm:mb-6">
             <span className="text-foreground">How It</span>{" "}
             <GlitchText className="text-secondary text-glow-magenta">Works</GlitchText>
           </h2>
-          <p className="font-mono text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
-            Get started in minutes. Track for life.
+          <p className="font-modern-body text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto px-4">
+            A clean flow from first login to daily progress.
           </p>
         </motion.div>
 
@@ -76,7 +76,7 @@ export const HowItWorksSection = () => {
               >
                 <div className="text-center">
                   {/* Number */}
-                  <div className="font-display text-5xl sm:text-6xl md:text-7xl font-black text-border/50 absolute -top-2 sm:-top-4 left-1/2 -translate-x-1/2 select-none">
+                  <div className="font-modern text-5xl sm:text-6xl md:text-7xl font-semibold text-border/50 absolute -top-2 sm:-top-4 left-1/2 -translate-x-1/2 select-none">
                     {step.number}
                   </div>
 
@@ -86,10 +86,10 @@ export const HowItWorksSection = () => {
                   </div>
 
                   {/* Content */}
-                  <h3 className="font-display text-base sm:text-lg uppercase tracking-wide text-foreground mb-2 sm:mb-3">
+                  <h3 className="font-modern text-base sm:text-lg uppercase tracking-wide text-foreground mb-2 sm:mb-3">
                     {step.title}
                   </h3>
-                  <p className="font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  <p className="font-modern-body text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     {step.description}
                   </p>
                 </div>
